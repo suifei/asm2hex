@@ -238,11 +238,11 @@ cbnz r0, #0x682c4
 		uri, _ := url.Parse("https://fyne.io/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
-	openCapstone := widget.NewButtonWithIcon("Capstone", icons.CAPSTONE_ICON, func() {
+	openCapstone := widget.NewButtonWithIcon("Capstone",fyne.NewStaticResource(icons.CAPSTONE_ICON.Name(), icons.CAPSTONE_ICON.Content()), func() {
 		uri, _ := url.Parse("https://www.capstone-engine.org/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
-	openKeystone := widget.NewButtonWithIcon("Keystone", icons.KEYSTONE_ICON, func() {
+	openKeystone := widget.NewButtonWithIcon("Keystone", fyne.NewStaticResource(icons.KEYSTONE_ICON.Name(), icons.KEYSTONE_ICON.Content()), func() {
 		uri, _ := url.Parse("https://www.keystone-engine.org/")
 		fyne.CurrentApp().OpenURL(uri)
 	})

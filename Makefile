@@ -5,6 +5,6 @@ fyne package
 hdiutil create -srcfolder "ASM to HEX Converter.app" -volname "ASM to HEX Converter" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size 45M "ASM2HEX_MacOS_ARM64.dmg"
 
 win64:
-set CGO_CFLAGS="-ID:\works\vcpkg\installed\x64-windows\include" 
-set CGO_LDFLAGS="-LD:\works\vcpkg\installed\x64-windows\lib -lcapstone" 
+set CGO_CFLAGS="-ID:\works\asm2hex\bindings\include" 
+set CGO_LDFLAGS="-LD:\works\asm2hex\bindings\lib -lcapstone" 
 fyne package

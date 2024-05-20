@@ -7,10 +7,10 @@ import (
 
 // #cgo LDFLAGS: -lcapstone
 // #cgo CFLAGS: -O2 -g -Wall -Werror
-// #cgo darwin CFLAGS: -I/usr/local/include -O3 -g -Wall -Werror
-// #cgo darwin LDFLAGS: -L/usr/local/lib -lcapstone -O3 -g
-// #cgo windows CFLAGS: -ID:/works/asm2hex/bindings/include -O3 -g -Wall -Werror
-// #cgo windows LDFLAGS: -LD:/works/asm2hex/bindings/lib -lcapstone -O3 -g
+// #cgo darwin CFLAGS: -I/usr/local/include
+// #cgo darwin LDFLAGS: -L/usr/local/lib -lcapstone
+// #cgo windows CFLAGS: -ID:\works\asm2hex\bindings\include
+// #cgo windows LDFLAGS: -LD:\works\asm2hex\bindings\lib -lcapstone
 // #include <stdlib.h>
 // #include <capstone/capstone.h>
 import "C"

@@ -10,7 +10,7 @@ func init() {
 		ID: "suifei.asm2hex.app",
 		Name: "ASM to HEX Converter",
 		Version: "1.0.0",
-		Build: 14,
+		Build: 16,
 		Icon: &fyne.StaticResource{
 	StaticName: "asm2hex.png",
 	StaticContent: []byte{
