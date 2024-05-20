@@ -1,0 +1,8 @@
+Website = "https://github.com/suifei/asm2hex"
+
+[Details]
+  Icon = "./theme/icons/asm2hex.png"
+  Name = "ASM to HEX Converter"
+  ID = "suifei.asm2hex.app"
+  Version = "1.0.0"
+  Build = 3
