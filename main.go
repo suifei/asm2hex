@@ -62,26 +62,26 @@ func hexdump(buf []byte) string {
 	return hexStr
 }
 func hexStringsToBytes(hexStrings []string) ([]byte, error) {
-    var result []byte
-    for _, hexStr := range hexStrings {
-        // 移除字符串中的空格
-        hexStr = strings.ReplaceAll(hexStr, " ", "")
+	var result []byte
+	for _, hexStr := range hexStrings {
+		// 移除字符串中的空格
+		hexStr = strings.ReplaceAll(hexStr, " ", "")
 
-        // 检查字符串长度是否为偶数
-        if len(hexStr)%2 != 0 {
-            return nil, fmt.Errorf("invalid hex string length: %s", hexStr)
-        }
+		// 检查字符串长度是否为偶数
+		if len(hexStr)%2 != 0 {
+			return nil, fmt.Errorf("invalid hex string length: %s", hexStr)
+		}
 
-        // 解析每个字节
-        for i := 0; i < len(hexStr); i += 2 {
-            b, err := strconv.ParseUint(hexStr[i:i+2], 16, 8)
-            if err != nil {
-                return nil, err
-            }
-            result = append(result, byte(b))
-        }
-    }
-    return result, nil
+		// 解析每个字节
+		for i := 0; i < len(hexStr); i += 2 {
+			b, err := strconv.ParseUint(hexStr[i:i+2], 16, 8)
+			if err != nil {
+				return nil, err
+			}
+			result = append(result, byte(b))
+		}
+	}
+	return result, nil
 }
 func createMainUI(win fyne.Window) *fyne.Container {
 	var status *widget.Label
@@ -93,17 +93,17 @@ func createMainUI(win fyne.Window) *fyne.Container {
 
 	output1 := widget.NewMultiLineEntry()
 	output1.SetPlaceHolder("ARM64")
-	output1.SetMinRowsVisible(20)
+	output1.SetMinRowsVisible(24)
 	output1.TextStyle.Monospace = true
 
 	output2 := widget.NewMultiLineEntry()
 	output2.SetPlaceHolder("ARM")
-	output2.SetMinRowsVisible(20)
+	output2.SetMinRowsVisible(24)
 	output2.TextStyle.Monospace = true
 
 	output3 := widget.NewMultiLineEntry()
 	output3.SetPlaceHolder("THUMB")
-	output3.SetMinRowsVisible(20)
+	output3.SetMinRowsVisible(24)
 	output3.TextStyle.Monospace = true
 
 	output1_info := widget.NewLabel("Little Endian")
@@ -273,23 +273,23 @@ cbnz r0, #0x682c4
 		toggleBtn.Refresh()
 	})
 	toggleBtn.Importance = widget.WarningImportance
-	clearBtn :=widget.NewButtonWithIcon("Clear", theme.DeleteIcon(), func() {
-			status.SetText("Clear")
-			status.Refresh()
-			assemblyEditor.SetText("")
-			offsetInput.SetText("0")
-			output1.SetText("")
-			output2.SetText("")
-			output3.SetText("")
-		})
+	clearBtn := widget.NewButtonWithIcon("Clear", theme.DeleteIcon(), func() {
+		status.SetText("Clear")
+		status.Refresh()
+		assemblyEditor.SetText("")
+		offsetInput.SetText("0")
+		output1.SetText("")
+		output2.SetText("")
+		output3.SetText("")
+	})
 	clearBtn.Importance = widget.DangerImportance
-	aboutBtn :=widget.NewButtonWithIcon("About...", theme.QuestionIcon(), func() {
-			status.SetText("About")
-			status.Refresh()
-			aboutDlg.Resize(fyne.NewSize(400, 300))
-			aboutDlg.Refresh()
-			aboutDlg.Show()
-		})
+	aboutBtn := widget.NewButtonWithIcon("About...", theme.QuestionIcon(), func() {
+		status.SetText("About")
+		status.Refresh()
+		aboutDlg.Resize(fyne.NewSize(400, 300))
+		aboutDlg.Refresh()
+		aboutDlg.Show()
+	})
 	aboutBtn.Importance = widget.LowImportance
 
 	status_container := container.New(layout.NewHBoxLayout(),
