@@ -18,8 +18,8 @@ func Arm64Disasm(encoding []byte, offset uint64, bigEndian bool) (code string, s
 	}()
 
 	engine, err := capstone.New(capstone.ARCH_ARM64, capstone.MODE_LITTLE_ENDIAN)
-	engine.Option(capstone.OPT_TYPE_SYNTAX, capstone.OPT_SYNTAX_ATT)
 	if err == nil {
+		engine.Option(capstone.OPT_TYPE_SYNTAX, capstone.OPT_SYNTAX_ATT)
 		defer engine.Close()
 
 		insns, err := engine.Dis(encoding, offset, 0)

@@ -1,4 +1,3 @@
-// +build darwin,linux,cgo,windows
 package capstone
 
 import (
@@ -7,9 +6,11 @@ import (
 )
 
 // #cgo LDFLAGS: -lcapstone
-// #cgo CFLAGS: -O3 -Wall -Werror
-// #cgo freebsd CFLAGS: -I/usr/local/include
-// #cgo freebsd LDFLAGS: -L/usr/local/lib
+// #cgo CFLAGS: -O2 -g -Wall -Werror
+// #cgo darwin CFLAGS: -I/usr/local/include -O3 -g -Wall -Werror
+// #cgo darwin LDFLAGS: -L/usr/local/lib -lcapstone -O3 -g
+// #cgo windows CFLAGS: -ID:/works/asm2hex/bindings/include -O3 -g -Wall -Werror
+// #cgo windows LDFLAGS: -LD:/works/asm2hex/bindings/lib -lcapstone -O3 -g
 // #include <stdlib.h>
 // #include <capstone/capstone.h>
 import "C"

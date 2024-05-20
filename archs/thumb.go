@@ -18,8 +18,8 @@ func ThumbDisasm(encoding []byte, offset uint64, bigEndian bool) (code string, s
 	}()
 
 	engine, err := capstone.New(capstone.ARCH_ARM, capstone.MODE_THUMB)
-	engine.Option(capstone.OPT_TYPE_SYNTAX, capstone.OPT_SYNTAX_ATT)
 	if err == nil {
+		engine.Option(capstone.OPT_TYPE_SYNTAX, capstone.OPT_SYNTAX_ATT)
 		defer engine.Close()
 		if bigEndian {
 			encoding = bigEndian16Bytes(encoding)
