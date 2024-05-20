@@ -234,8 +234,20 @@ cbnz r0, #0x682c4
 		uri, _ := url.Parse("https://github.com/suifei")
 		fyne.CurrentApp().OpenURL(uri)
 	})
+	openFyne := widget.NewButtonWithIcon("Fyne", theme.FyneLogo(), func() {
+		uri, _ := url.Parse("https://fyne.io/")
+		fyne.CurrentApp().OpenURL(uri)
+	})
+	openCapstone := widget.NewButtonWithIcon("Capstone", icons.CAPSTONE_ICON, func() {
+		uri, _ := url.Parse("https://www.capstone-engine.org/")
+		fyne.CurrentApp().OpenURL(uri)
+	})
+	openKeystone := widget.NewButtonWithIcon("Keystone", icons.KEYSTONE_ICON, func() {
+		uri, _ := url.Parse("https://www.keystone-engine.org/")
+		fyne.CurrentApp().OpenURL(uri)
+	})
 	aboutDlg := dialog.NewCustom("About", "Close", container.New(
-		layout.NewVBoxLayout(), widget.NewLabel(about_messages), container.NewHBox(openUrlBtn, openGithub),
+		layout.NewVBoxLayout(), widget.NewLabel(about_messages), container.NewHBox(openUrlBtn, openGithub, openFyne, openCapstone, openKeystone),
 	), win)
 	status = widget.NewLabel("Ready")
 	status.Alignment = fyne.TextAlignTrailing
