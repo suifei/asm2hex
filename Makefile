@@ -1,5 +1,6 @@
 #   --target value, --os value         
 #The operating system to target (android, android/arm, android/arm64, android/amd64, android/386, darwin, freebsd, ios, linux, netbsd, openbsd, windows)
 release:
-	fyne release -os macOS -appID suifei.asm2hex.app -appVersion 1.0 -appBuild 1 -category tools
-	fyne release -os iOS -appID suifei.asm2hex.app -appVersion 1.0 -appBuild 1
+	fyne package
+	hdiutil create -srcfolder "ASM to HEX Converter.app" -volname "ASM to HEX Converter" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size 45M "ASM2HEX_MacOS_ARM64.dmg"
+	

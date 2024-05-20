@@ -14,6 +14,8 @@
 *.dylib
 
 asm2hex
+ASM to HEX Converter.app
+ASM2HEX_MacOS_ARM64.dmg
 
 # Test binary, built with `go test -c`
 *.test
