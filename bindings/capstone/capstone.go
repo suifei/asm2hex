@@ -5,12 +5,12 @@ import (
 	"unsafe"
 )
 
-// #cgo LDFLAGS: -lcapstone
+// #cgo LDFLAGS: -lcapstone -lkeystone
 // #cgo CFLAGS: -O2 -g -Wall -Werror
 // #cgo darwin CFLAGS: -I/usr/local/include
-// #cgo darwin LDFLAGS: -L/usr/local/lib -lcapstone
-// #cgo windows CFLAGS: -ID:\works\asm2hex\bindings\include
-// #cgo windows LDFLAGS: -LD:\works\asm2hex\bindings\lib -lcapstone
+// #cgo darwin LDFLAGS: -L/usr/local/lib -lcapstone -lkeystone
+// #cgo windows CFLAGS: -ID:/works/asm2hex/bindings/include
+// #cgo windows LDFLAGS: -LD:/works/asm2hex/bindings/lib -lcapstone -lkeystone
 // #include <stdlib.h>
 // #include <capstone/capstone.h>
 import "C"

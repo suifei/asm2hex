@@ -11,8 +11,8 @@
             "mode": "auto",
             "windows": {
                 "env": {
-                    "CGO_CFLAGS": "-ID:/works/asm2hex/bindings/include -O3 -g -Wall -Werror",
-                    "CGO_LDFLAGS": "-LD:/works/asm2hex/bindings/lib -lcapstone -lkeystone -O3 -g"
+                    "CGO_CFLAGS": "-ID:\\works\\asm2hex\\bindings\\include",
+                    "CGO_LDFLAGS": "-LD:\\works\\asm2hex\\bindings\\lib -lcapstone -lkeystone -O3 -g"
                 }
             },
             "program": "${workspaceFolder}/main.go",
