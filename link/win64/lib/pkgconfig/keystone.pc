@@ -1,9 +1,0 @@
-prefix=${pcfiledir}/../..
-Name: keystone
-Description: Keystone assembler engine
-Version: 0.9
-libdir=${prefix}/lib
-includedir=${prefix}/include
-Libs: "-L${libdir}" -lkeystone
-Cflags: "-I${includedir}"
-
