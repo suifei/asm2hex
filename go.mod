@@ -4,7 +4,6 @@ go 1.20
 
 require (
 	fyne.io/fyne/v2 v2.4.5
-	github.com/keystone-engine/keystone v0.0.0-20230519220125-fb92f32391c6
 )
 
 require (

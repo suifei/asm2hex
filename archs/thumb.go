@@ -3,7 +3,7 @@ package archs
 import (
 	"fmt"
 
-	"github.com/keystone-engine/keystone/bindings/go/keystone"
+	"github.com/suifei/asm2hex/bindings/keystone"
 	"github.com/suifei/asm2hex/bindings/capstone"
 )
 
