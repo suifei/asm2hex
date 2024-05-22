@@ -238,7 +238,7 @@ cbnz r0, #0x682c4
 		uri, _ := url.Parse("https://fyne.io/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
-	openCapstone := widget.NewButtonWithIcon("Capstone",icons.CAPSTONE_PNG_RES, func() {
+	openCapstone := widget.NewButtonWithIcon("Capstone", icons.CAPSTONE_PNG_RES, func() {
 		uri, _ := url.Parse("https://www.capstone-engine.org/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
@@ -296,6 +296,25 @@ cbnz r0, #0x682c4
 	})
 	clearBtn.Importance = widget.DangerImportance
 	aboutBtn := widget.NewButtonWithIcon("About...", theme.QuestionIcon(), func() {
+
+		if icons.CAPSTONE_PNG_RES == nil {
+			cs, err := fyne.LoadResourceFromURLString("https://www.capstone-engine.org/img/capstone.png")
+			if err != nil {
+				fmt.Println(err)
+			}
+			icons.CAPSTONE_PNG_RES = cs
+
+			ks, err := fyne.LoadResourceFromURLString("https://www.keystone-engine.org/images/keystone.png")
+			if err != nil {
+				fmt.Println(err)
+			}
+			icons.KEYSTONE_PNG_RES = ks
+			openCapstone.Icon = icons.CAPSTONE_PNG_RES
+			openKeystone.Icon = icons.KEYSTONE_PNG_RES
+		}
+		openCapstone.Refresh()
+		openKeystone.Refresh()
+
 		status.SetText("About")
 		status.Refresh()
 		aboutDlg.Resize(fyne.NewSize(400, 300))
