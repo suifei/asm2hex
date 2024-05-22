@@ -53,7 +53,6 @@ func hexdump(buf []byte) string {
 	}
 	var hexStr string
 	for _, b := range buf {
-		// 16进制转换为字符串,保持4位长度，大写，不足补0
 		hexStr += fmt.Sprintf("%02X", b)
 	}
 	if prefix_hex {
@@ -64,15 +63,10 @@ func hexdump(buf []byte) string {
 func hexStringsToBytes(hexStrings []string) ([]byte, error) {
 	var result []byte
 	for _, hexStr := range hexStrings {
-		// 移除字符串中的空格
 		hexStr = strings.ReplaceAll(hexStr, " ", "")
-
-		// 检查字符串长度是否为偶数
 		if len(hexStr)%2 != 0 {
 			return nil, fmt.Errorf("invalid hex string length: %s", hexStr)
 		}
-
-		// 解析每个字节
 		for i := 0; i < len(hexStr); i += 2 {
 			b, err := strconv.ParseUint(hexStr[i:i+2], 16, 8)
 			if err != nil {
