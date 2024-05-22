@@ -1,5 +1,3 @@
-当然!以下是为你的 ASM2HEX 项目编写的 CODE_OF_CONDUCT.md 文件:
-
 # 行为准则
 
 ## 我们的承诺
