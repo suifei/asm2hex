@@ -4,11 +4,7 @@ import (
 	"bytes"
 	"unsafe"
 )
-
-// #cgo darwin CFLAGS: -I/usr/local/include -O2 -g -Wall -Werror
-// #cgo darwin LDFLAGS: -L/usr/local/lib -lcapstone
-// #cgo windows CFLAGS: -ID:/works/asm2hex/link/win64/include
-// #cgo windows LDFLAGS: -LD:/works/asm2hex/link/win64/lib -lcapstone
+// #cgo LDFLAGS: -lcapstone
 // #include <capstone/capstone.h>
 import "C"
 

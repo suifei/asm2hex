@@ -2,9 +2,7 @@ module github.com/suifei/asm2hex
 
 go 1.20
 
-require (
-	fyne.io/fyne/v2 v2.4.5
-)
+require fyne.io/fyne/v2 v2.4.5
 
 require (
 	fyne.io/systray v1.10.1-0.20231115130155-104f5ef7839e // indirect

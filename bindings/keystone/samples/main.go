@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/keystone-engine/keystone/bindings/go/keystone"
+	"github.com/suifei/asm2hex/bindings/keystone"
 )
 
 func main() {
