@@ -75,6 +75,12 @@ ASM2HEX的开发得益于以下开源项目:
 
 ASM2HEX采用MIT许可证进行发布,详情参见LICENSE文件。
 
+## 行为准则
+
+在参与 ASM2HEX 项目时,请遵循我们的 [行为准则](CODE_OF_CONDUCT.md)。我们致力于维护一个友好、包容的社区环境,所有参与者都应该感到受欢迎和尊重。
+
+再次感谢你的贡献!如果你有任何问题或需要进一步的帮助,请随时联系我们。
+
 ## 联系方式
 
 如果您在使用过程中遇到任何问题,或者有任何建议和反馈,欢迎通过以下方式联系我:
@@ -163,6 +169,12 @@ Thanks to the contributors and maintainers of these excellent projects!
 ## License
 
 ASM2HEX is released under the MIT license. For details, see the LICENSE file.
+
+## Code of Conduct
+
+When participating in the ASM2HEX project, please follow our [Code of Conduct](CODE_OF_CONDUCT.md). We are committed to maintaining a friendly and inclusive community environment where all participants should feel welcome and respected.
+
+Thank you again for your contribution! If you have any questions or need further assistance, please feel free to contact us.
 
 ## Contact
 
