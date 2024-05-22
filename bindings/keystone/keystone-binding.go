@@ -4,6 +4,7 @@
 
 package keystone
 
+// #cgo LDFLAGS: -lkeystone -lstdc++ -lm
 // #cgo darwin CFLAGS: -I/usr/local/include
 // #cgo darwin LDFLAGS: -L/usr/local/lib -lkeystone
 // #cgo windows CFLAGS: -ID:/works/asm2hex/link/win64/include
