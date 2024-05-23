@@ -17,7 +17,7 @@
 
 ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十六进制机器码相互转换的图形化工具。它支持ARM64、ARM和Thumb三种指令集。
 
-[**Full Changelog**](https://github.com/suifei/asm2hex/compare/v1.0...v1.1)
+[**Full Changelog**](https://github.com/suifei/asm2hex/compare/v1.1...main)
 
 ## 功能特点
 
