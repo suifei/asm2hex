@@ -10,6 +10,13 @@
 - MSYS2 或 Cygwin 环境
 - MinGW-w64 工具链
 
+快速搭建环境：[Release V1.1](https://github.com/suifei/asm2hex/releases/tag/v1.1) 中下载 `msys64.7z`（Windows 10 的编译环境，请解压到 D 盘根目录，运行D:\msys64\mingw64.exe进入编译环境，切换到源码目录内，运行'make'，先编译lib，再build）
+
+国内下载网盘分流：
+- 论坛: [pediy](https://bbs.kanxue.com/thread-281871.htm) [52pojie](https://www.52pojie.cn/thread-1927199-1-1.html)
+- 下载: [国内地址1](https://pan.baidu.com/s/1EiXuE9UDfQrAtf4heFINHQ?pwd=52pj)
+- 分流: [国内地址1](https://pan.baidu.com/s/1TgSNXi3-DZxg5lqaJiBeyA?pwd=8888)
+
 ### 配置步骤
 
 1. 安装 MSYS2 或 Cygwin 环境。可以从官网下载安装包并按照提示进行安装。
