@@ -38,9 +38,9 @@ type Syntax struct {
 }
 
 var tests = []Syntax{
-	Syntax{
+	{
 		OPT_SYNTAX_INTEL, []Test{
-			Test{ARCH_X86, MODE_32 | MODE_LITTLE_ENDIAN, 0, "mov ah, al", []byte{0x88, 0xc4}},
+			{ARCH_X86, MODE_32 | MODE_LITTLE_ENDIAN, 0, "mov ah, al", []byte{0x88, 0xc4}},
 		},
 	},
 }

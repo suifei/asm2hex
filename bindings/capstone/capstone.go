@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"unsafe"
 )
+
 // #cgo LDFLAGS: -lcapstone
 // #include <capstone/capstone.h>
 import "C"
