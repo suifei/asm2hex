@@ -10,7 +10,7 @@
 - MSYS2 或 Cygwin 环境
 - MinGW-w64 工具链
 
-快速搭建环境：[Release V1.1](https://github.com/suifei/asm2hex/releases/tag/v1.1) 中下载 `msys64.7z`（Windows 10 的编译环境，请解压到 D 盘根目录，运行D:\msys64\mingw64.exe进入编译环境，切换到源码目录内，运行'make'，先编译lib，再build）
+**快速搭建环境：[Release V1.1](https://github.com/suifei/asm2hex/releases/tag/v1.1) 中下载 `msys64.7z`（Windows 10 的编译环境，请解压到 D 盘根目录，运行D:\msys64\mingw64.exe进入编译环境，切换到源码目录内，运行'make'，先编译lib，再build）**
 
 国内下载网盘分流：
 - 论坛: [pediy](https://bbs.kanxue.com/thread-281871.htm) [52pojie](https://www.52pojie.cn/thread-1927199-1-1.html)
@@ -47,12 +47,13 @@
 
 8. 编译 Keystone 和 Capstone 库:
    ```
-   make win_lib
+   make clean
+   make lib
    ```
 
 9. 编译 ASM2HEX:
    ```
-   make win
+   make build
    ```
 
 编译完成后,可执行文件将生成在 `build` 目录下。
@@ -99,12 +100,13 @@
 
 7. 编译 Keystone 和 Capstone 库:
    ```
-   make mac_lib
+   make clean
+   make lib
    ```
 
 8. 编译 ASM2HEX:
    ```
-   make mac
+   make build
    ```
 
 编译完成后,应用程序包将生成在 `build` 目录下。
