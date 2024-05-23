@@ -107,6 +107,9 @@ ASM2HEX采用MIT许可证进行发布,详情参见[LICENSE](LICENSE)文件。
 - 邮箱: c3VpZmUgQGdtYWlsIGRvdGNvbQ==
 - QQ群: 555354813
 - GitHub: https://github.com/suifei/asm2hex
+- 论坛: [pediy](https://bbs.kanxue.com/thread-281871.htm) [52pojie](https://www.52pojie.cn/thread-1927199-1-1.html)
+- 下载: [国内地址1](https://pan.baidu.com/s/1EiXuE9UDfQrAtf4heFINHQ?pwd=52pj)
+- 分流: [国内地址1](https://pan.baidu.com/s/1TgSNXi3-DZxg5lqaJiBeyA?pwd=8888)
 
 希望ASM2HEX能够成为您的汇编开发和学习的得力助手!
 
