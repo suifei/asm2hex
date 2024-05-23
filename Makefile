@@ -1,91 +1,78 @@
-.PHONY: help clean lib install win
+.PHONY: help clean lib build
+
+# 检测当前操作系统
+ifeq ($(OS),Windows_NT)
+    PLATFORM := Windows
+else
+    PLATFORM := $(shell uname)
+endif
+
+# 定义变量
+CAPSTONE_VERSION := 5.0.1
+KEYSTONE_VERSION := 0.9.2
+INSTALL_PREFIX := /usr/local
+CMAKE_FLAGS := -DCMAKE_INSTALL_PREFIX="$(INSTALL_PREFIX)"
+MAKE_FLAGS := 
+SUDO := 
+
+ifeq ($(PLATFORM),Windows)
+    CMAKE_FLAGS += -DBUILD_LIBS_ONLY=1 \
+                   -DLLVM_BUILD_32_BITS=0 \
+                   -DCMAKE_OSX_ARCHITECTURES="x86_64" \
+                   -DCMAKE_BUILD_TYPE="Release" \
+                   -DBUILD_SHARED_LIBS=0 \
+                   -DLLVM_TARGETS_TO_BUILD="all" \
+                   -G "Unix Makefiles"
+    MAKE_FLAGS += -j8
+    CGO_LDFLAGS := -L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid
+    TARGET := windows
+    KEYSTONE_BUILD_CMD := cmake $(CMAKE_FLAGS) .. && time make $(MAKE_FLAGS) && make install
+else ifeq ($(PLATFORM),Darwin)
+    SUDO := sudo
+    CGO_LDFLAGS := -L/usr/local/lib -lcapstone -lkeystone
+    TARGET := darwin
+    KEYSTONE_BUILD_CMD := ../make-lib.sh && $(SUDO) make install
+else
+    $(error Unsupported platform: $(PLATFORM))
+endif
 
 help:
-	@echo "make help"
-	@echo "make clean"
-	@echo "make win_lib"
-	@echo "make win"
-	@echo "make mac_lib"
-	@echo "make mac"
+	@echo "Available targets:"
+	@echo "  help    - Show this help message"
+	@echo "  clean   - Clean up temporary files"
+	@echo "  lib     - Build and install Capstone and Keystone libraries"
+	@echo "  build   - Build the project"
 
 clean:
-	rm -rf tmp
+	@rm -rf tmp build && \
+	echo "Cleaned up temporary files"
 
-win_lib:
-	# cd link/win64/bin && \
-	# gendef keystone.dll && \
-	# gendef capstone.dll && \
-	# dlltool --as-flags=--64 -m i386:x86-64 -k --output-lib libkeystone.a --input-def keystone.def && \
-	# dlltool --as-flags=--64 -m i386:x86-64 -k --output-lib libcapstone.a --input-def capstone.def && \
-	# mv -fv *.a ../lib/
-	# # install lib
-	# cp -fRv ./link/win64/include/* /usr/include/
-	# cp -fv ./link/win64/lib/*.a /usr/lib
-
-	# MSYS2 MINGW64
-	mkdir -p ./tmp
+lib:
+	@mkdir -p ./tmp && \
 	cd ./tmp && \
 	git clone https://github.com/capstone-engine/capstone.git && \
 	cd capstone && \
-	git checkout 5.0.1 && \
+	git checkout $(CAPSTONE_VERSION) && \
 	mkdir build && \
 	cd build && \
-	cmake -DCMAKE_INSTALL_PREFIX="/usr/local" .. && \
-	cmake --build . --config Release --target install && \
-	cd .. && \
+	cmake $(CMAKE_FLAGS) .. && \
+	$(SUDO) cmake --build . --config Release --target install && \
+	cd ../.. && \
 	git clone https://github.com/keystone-engine/keystone.git && \
 	cd keystone && \
-	git checkout 0.9.2 && \
+	git checkout $(KEYSTONE_VERSION) && \
 	mkdir build && \
 	cd build && \
-	cmake -DBUILD_LIBS_ONLY=1 \
-		-DLLVM_BUILD_32_BITS=0 \
-		-DCMAKE_OSX_ARCHITECTURES="x86_64" \
-		-DCMAKE_BUILD_TYPE="Release" \
-		-DBUILD_SHARED_LIBS=0 \
-		-DLLVM_TARGETS_TO_BUILD="all" \
-		-DCMAKE_INSTALL_PREFIX="/usr/local" \
-		-G "Unix Makefiles" .. && \
-	time make -j8 && \
-	make install && \
+	$(KEYSTONE_BUILD_CMD) && \
 	cd ../.. && \
-	echo "install success"
+	echo "Libraries installed successfully for $(PLATFORM)"
 
-
-win:
-	mkdir -p ./build
+build:
+	@mkdir -p ./build && \
 	CGO_ENABLED=1 \
 	CGO_CFLAGS="-I/usr/local/include -O2 -Wall" \
-	CGO_LDFLAGS="-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid" \
-	fyne package --release --target windows --icon ./theme/icons/asm2hex.png 
-	rm -rf ./build/*.exe
-	mv -fv *.exe ./build
-
-mac_lib:
-	mkdir -p ./tmp
-	cd ./tmp && \
-	git clone https://github.com/capstone-engine/capstone.git && \
-	cd capstone && \
-	git checkout 5.0.1 && \
-	mkdir build && \
-	cd build && \
-	cmake .. && \
-	sudo cmake --build . --config Release --target install && \
-	cd .. && \
-	git clone https://github.com/keystone-engine/keystone.git && \
-	cd keystone && \
-	git checkout 0.9.2 && \
-	mkdir build && \
-	cd build && \
-	../make-lib.sh && \
-	sudo make install && \
-	cd ../.. && \
-	echo "install success"
-
-mac:
-	mkdir -p ./build
-	CGO_CFLAGS="-I/usr/local/include -O2 -Wall" \
-	CGO_LDFLAGS="-L/usr/local/lib -lcapstone -lkeystone" \
-	fyne package --release --target darwin --icon ./theme/icons/asm2hex.png
-	rm -rf ./build/*.app
-	mv -fv *.app ./build
+	CGO_LDFLAGS="$(CGO_LDFLAGS)" \
+	fyne package --release --target $(TARGET) --icon ./theme/icons/asm2hex.png && \
+	rm -rf ./build/$(if $(filter $(PLATFORM),Windows),*.exe,*.app) && \
+	mv -fv $(if $(filter $(PLATFORM),Windows),*.exe,*.app) ./build && \
+	echo "Build completed for $(PLATFORM)"

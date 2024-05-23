@@ -1,0 +1,80 @@
+.PHONY: help clean lib install win
+
+help:
+	@echo "make help"
+	@echo "make clean"
+	@echo "make win_lib"
+	@echo "make win"
+	@echo "make mac_lib"
+	@echo "make mac"
+
+clean:
+	rm -rf tmp
+
+win_lib:
+	# MSYS2 MINGW64
+	mkdir -p ./tmp
+	cd ./tmp && \
+	git clone https://github.com/capstone-engine/capstone.git && \
+	cd capstone && \
+	git checkout 5.0.1 && \
+	mkdir build && \
+	cd build && \
+	cmake -DCMAKE_INSTALL_PREFIX="/usr/local" .. && \
+	cmake --build . --config Release --target install && \
+	cd .. && \
+	git clone https://github.com/keystone-engine/keystone.git && \
+	cd keystone && \
+	git checkout 0.9.2 && \
+	mkdir build && \
+	cd build && \
+	cmake -DBUILD_LIBS_ONLY=1 \
+		-DLLVM_BUILD_32_BITS=0 \
+		-DCMAKE_OSX_ARCHITECTURES="x86_64" \
+		-DCMAKE_BUILD_TYPE="Release" \
+		-DBUILD_SHARED_LIBS=0 \
+		-DLLVM_TARGETS_TO_BUILD="all" \
+		-DCMAKE_INSTALL_PREFIX="/usr/local" \
+		-G "Unix Makefiles" .. && \
+	time make -j8 && \
+	make install && \
+	cd ../.. && \
+	echo "install success"
+
+mac_lib:
+	mkdir -p ./tmp
+	cd ./tmp && \
+	git clone https://github.com/capstone-engine/capstone.git && \
+	cd capstone && \
+	git checkout 5.0.1 && \
+	mkdir build && \
+	cd build && \
+	cmake .. && \
+	sudo cmake --build . --config Release --target install && \
+	cd .. && \
+	git clone https://github.com/keystone-engine/keystone.git && \
+	cd keystone && \
+	git checkout 0.9.2 && \
+	mkdir build && \
+	cd build && \
+	../make-lib.sh && \
+	sudo make install && \
+	cd ../.. && \
+	echo "install success"
+
+win:
+	mkdir -p ./build
+	CGO_ENABLED=1 \
+	CGO_CFLAGS="-I/usr/local/include -O2 -Wall" \
+	CGO_LDFLAGS="-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid" \
+	fyne package --release --target windows --icon ./theme/icons/asm2hex.png 
+	rm -rf ./build/*.exe
+	mv -fv *.exe ./build
+mac:
+	mkdir -p ./build
+	CGO_ENABLED=1 \
+	CGO_CFLAGS="-I/usr/local/include -O2 -Wall" \
+	CGO_LDFLAGS="-L/usr/local/lib -lcapstone -lkeystone" \
+	fyne package --release --target darwin --icon ./theme/icons/asm2hex.png
+	rm -rf ./build/*.app
+	mv -fv *.app ./build

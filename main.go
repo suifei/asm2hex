@@ -294,25 +294,26 @@ cbnz r0, #0x682c4
 	})
 	clearBtn.Importance = widget.DangerImportance
 	aboutBtn := widget.NewButtonWithIcon("About...", theme.QuestionIcon(), func() {
-		go func() {
-			if icons.CAPSTONE_PNG_RES == nil {
+		if icons.CAPSTONE_PNG_RES == nil || icons.KEYSTONE_PNG_RES == nil {
+			go func() {
 				cs, err := fyne.LoadResourceFromURLString("https://www.capstone-engine.org/img/capstone.png")
 				if err != nil {
 					fmt.Println(err)
 				}
 				icons.CAPSTONE_PNG_RES = cs
-
+				openCapstone.Icon = icons.CAPSTONE_PNG_RES
+				openCapstone.Refresh()
+			}()
+			go func() {
 				ks, err := fyne.LoadResourceFromURLString("https://www.keystone-engine.org/images/keystone.png")
 				if err != nil {
 					fmt.Println(err)
 				}
 				icons.KEYSTONE_PNG_RES = ks
-				openCapstone.Icon = icons.CAPSTONE_PNG_RES
 				openKeystone.Icon = icons.KEYSTONE_PNG_RES
-				openCapstone.Refresh()
 				openKeystone.Refresh()
-			}
-		}()
+			}()
+		}
 
 		status.SetText("About")
 		status.Refresh()
