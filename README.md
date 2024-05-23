@@ -46,9 +46,7 @@ ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十
   
 4. 编译生成可执行文件:
    
-   ```
-   go build
-   ```
+   [COMPILE.MD](COMPILE.md)
 
 现在可以直接运行生成的可执行文件,享受ASM2HEX带来的便利!
 
@@ -149,10 +147,8 @@ ASM2HEX is a graphical tool for bidirectional conversion between assembly langua
    ```
 
 4. Compile to generate the executable file:
-
-   ```
-   go build
-   ```
+   
+   [COMPILE.MD](COMPILE.md)
 
 Now you can directly run the generated executable file and enjoy the convenience brought by ASM2HEX!
 
