@@ -1,4 +1,19 @@
+
 # ASM2HEX
+
+[![Github stars](https://img.shields.io/github/stars/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![Github forks](https://img.shields.io/github/forks/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![GitHub followers](https://img.shields.io/github/followers/suifei.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/suifei?tab=followers)
+[![Twitter Follow](https://img.shields.io/twitter/follow/csuifei?style=social)](https://twitter.com/csuifei)
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/suifei/asm2hex)](https://goreportcard.com/report/github.com/suifei/asm2hex)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![GoDoc](https://godoc.org/github.com/suifei/asm2hex?status.svg)](https://pkg.go.dev/github.com/suifei/asm2hex)
+[![Release](https://img.shields.io/github/release/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex/releases)
+[![Download](https://img.shields.io/github/downloads/suifei/asm2hex/total)](https://github.com/suifei/asm2hex/releases)
+[![Github issues](https://img.shields.io/github/issues/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![Github last commit](https://img.shields.io/github/last-commit/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![Github contributors](https://img.shields.io/github/contributors/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
 
 ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十六进制机器码相互转换的图形化工具。它支持ARM64、ARM和Thumb三种指令集。
 
@@ -37,11 +52,13 @@ ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十
 
 ## 使用说明  
 
-![](screenshots/01.png)
+![](screenshots/b.png)
 
-![](screenshots/02.png)
+![](screenshots/a.png)
 
-![](screenshots/03.png)
+![](screenshots/c.png)
+
+![](screenshots/d.png)
 
 1. 在左侧的输入框中输入汇编指令或十六进制机器码。多条指令/数据可以分行输入。
 
@@ -63,17 +80,19 @@ ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十
 
 ASM2HEX的开发得益于以下开源项目:
 
-- Fyne: 基于Go的跨平台图形界面框架 
+- [Fyne](https://fyne.io/) : 基于Go的跨平台图形界面框架 
 
-- Keystone: 轻量级的多架构汇编引擎
+- [Keystone](https://www.keystone-engine.org/): 轻量级的多架构汇编引擎
 
-- Capstone: 多架构支持的反汇编引擎
+- [Capstone](https://www.capstone-engine.org/): 多架构支持的反汇编引擎
+
+- 特别感谢 [armconverter.com](https://armconverter.com/) 提供的在线工具,为ASM2HEX提供了灵感。
 
 感谢这些优秀项目的贡献者和维护者!
 
 ## 许可证
 
-ASM2HEX采用MIT许可证进行发布,详情参见LICENSE文件。
+ASM2HEX采用MIT许可证进行发布,详情参见[LICENSE](LICENSE)文件。
 
 ## 行为准则
 
@@ -134,11 +153,13 @@ Now you can directly run the generated executable file and enjoy the convenience
 
 ## Usage
 
-![](screenshots/01.png)
+![](screenshots/b.png)
 
-![](screenshots/02.png)
+![](screenshots/a.png)
 
-![](screenshots/03.png)
+![](screenshots/c.png)
+
+![](screenshots/d.png)
 
 1. Enter assembly instructions or hexadecimal machine code in the input box on the left. Multiple instructions/data can be entered in separate lines.
 
@@ -160,15 +181,16 @@ Now you can directly run the generated executable file and enjoy the convenience
 
 The development of ASM2HEX has benefited from the following open-source projects:
 
-- Fyne: Cross-platform graphical interface framework based on Go
-- Keystone: Lightweight multi-architecture assembly engine
-- Capstone: Disassembly engine with multi-architecture support
+- [Fyne](https://fyne.io/): Cross-platform graphical interface framework based on Go
+- [Keystone](https://www.keystone-engine.org/): Lightweight multi-architecture assembly engine
+- [Capstone](https://www.capstone-engine.org/): Disassembly engine with multi-architecture support
+- Special thanks to the online tool provided by [armconverter.com](https://armconverter.com/), which inspired the development of ASM2HEX.
 
 Thanks to the contributors and maintainers of these excellent projects!
 
 ## License
 
-ASM2HEX is released under the MIT license. For details, see the LICENSE file.
+ASM2HEX is released under the MIT license. For details, see the [LICENSE](LICENSE) file.
 
 ## Code of Conduct
 

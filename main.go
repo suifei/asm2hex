@@ -22,6 +22,7 @@ import (
 const (
 	ApplicationTitle       = "ASM to HEX Converter"
 	ApplicationTitleToggle = "HEX to ASM Converter"
+	ApplicationVersion     = "1.1"
 )
 
 type ToggleMode string
@@ -214,7 +215,7 @@ cbnz r0, #0x682c4
 	app_title.TextSize = 24
 
 	about_messages := "ASM to HEX Converter\n\n" +
-		"Version: 1.0\n" +
+		"Version: v" + ApplicationVersion + "\n" +
 		"Author: suifei suifei@gmail.com\n" +
 		"License: MIT\n" +
 		"Source code: https://github.com/suifei/asm2hex\n\n" +
@@ -290,24 +291,25 @@ cbnz r0, #0x682c4
 	})
 	clearBtn.Importance = widget.DangerImportance
 	aboutBtn := widget.NewButtonWithIcon("About...", theme.QuestionIcon(), func() {
+		go func() {
+			if icons.CAPSTONE_PNG_RES == nil {
+				cs, err := fyne.LoadResourceFromURLString("https://www.capstone-engine.org/img/capstone.png")
+				if err != nil {
+					fmt.Println(err)
+				}
+				icons.CAPSTONE_PNG_RES = cs
 
-		if icons.CAPSTONE_PNG_RES == nil {
-			cs, err := fyne.LoadResourceFromURLString("https://www.capstone-engine.org/img/capstone.png")
-			if err != nil {
-				fmt.Println(err)
+				ks, err := fyne.LoadResourceFromURLString("https://www.keystone-engine.org/images/keystone.png")
+				if err != nil {
+					fmt.Println(err)
+				}
+				icons.KEYSTONE_PNG_RES = ks
+				openCapstone.Icon = icons.CAPSTONE_PNG_RES
+				openKeystone.Icon = icons.KEYSTONE_PNG_RES
+				openCapstone.Refresh()
+				openKeystone.Refresh()
 			}
-			icons.CAPSTONE_PNG_RES = cs
-
-			ks, err := fyne.LoadResourceFromURLString("https://www.keystone-engine.org/images/keystone.png")
-			if err != nil {
-				fmt.Println(err)
-			}
-			icons.KEYSTONE_PNG_RES = ks
-			openCapstone.Icon = icons.CAPSTONE_PNG_RES
-			openKeystone.Icon = icons.KEYSTONE_PNG_RES
-		}
-		openCapstone.Refresh()
-		openKeystone.Refresh()
+		}()
 
 		status.SetText("About")
 		status.Refresh()
