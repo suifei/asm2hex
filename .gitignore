@@ -13,6 +13,8 @@
 *.so
 *.dylib
 
+tmp/
+
 build/
 
 asm2hex

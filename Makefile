@@ -46,7 +46,6 @@ mac_lib:
 	cmake .. && \
 	sudo cmake --build . --config Release --target install && \
 	cd .. && \
-	rm -rf capstone && \
 	git clone https://github.com/keystone-engine/keystone.git && \
 	cd keystone && \
 	git checkout 0.9.2 && \
@@ -54,10 +53,8 @@ mac_lib:
 	cd build && \
 	../make-lib.sh && \
 	sudo make install && \
-	cd .. && \
-	rm -rf keystone && \
-	cd .. && \
-	rm -rf tmp
+	cd ../.. && \
+	echo "install success"
 
 mac:
 	mkdir -p ./build
