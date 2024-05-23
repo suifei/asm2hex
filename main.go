@@ -1,5 +1,8 @@
 package main
 
+/*
+#cgo CFLAGS: -O2 -Wall
+*/
 import (
 	"fmt"
 	"image/color"
