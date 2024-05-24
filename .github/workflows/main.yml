@@ -53,17 +53,6 @@ jobs:
     - name: Build project
       run: make build
 
-    - name: Create Release
-      uses: actions/create-release@v1
-      with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
-        body: Please see the [comparison view](https://github.com/${{ github.repository }}/compare/${{ github.event.base_ref }}...${{ github.ref_name }}) for the changes included in this release.
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Compress Release Asset (Windows)
       if: matrix.os == 'windows-latest'
       run: |
