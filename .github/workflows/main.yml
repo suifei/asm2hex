@@ -1,0 +1,109 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: Install dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install make
+        choco install mingw
+        choco install git
+        choco install cmake
+
+    - name: Install dependencies (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install make
+        brew install git
+        brew install cmake
+
+    - name: Install Fyne
+      run: go install fyne.io/fyne/v2/cmd/fyne@latest
+
+    - name: Set up environment variables
+      run: |
+        echo "CGO_ENABLED=1" >> $GITHUB_ENV
+        echo "CGO_CFLAGS=-I/usr/local/include -O2 -Wall" >> $GITHUB_ENV
+        echo "CGO_LDFLAGS=${{ matrix.os == 'windows-latest' && '-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}" >> $GITHUB_ENV
+
+    - name: Build Capstone and Keystone libraries
+      run: make lib
+
+    - name: Build project
+      run: make build
+
+    - name: Generate changelog
+      run: |
+        # Install go-changelog
+        go install github.com/hashicorp/go-changelog/cmd/changelog-build@latest
+        # Generate changelog
+        changelog-build > CHANGELOG.md
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body_path: CHANGELOG.md
+        draft: false
+        prerelease: false
+
+    - name: Compress Release Asset (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        mkdir release
+        cp ./build/asm2hex.exe ./release/
+        7z a -tzip asm2hex-windows-${{ github.ref }}.zip ./release/*
+
+    - name: Compress Release Asset (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        mkdir release
+        cp -r ./build/asm2hex.app ./release/
+        zip -r asm2hex-macos-${{ github.ref }}.zip ./release/*
+
+    - name: Upload Release Asset (Windows)
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./asm2hex-windows-${{ github.ref }}.zip
+        asset_name: asm2hex-windows-${{ github.ref }}.zip
+        asset_content_type: application/zip
+
+    - name: Upload Release Asset (macOS)
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./asm2hex-macos-${{ github.ref }}.zip
+        asset_name: asm2hex-macos-${{ github.ref }}.zip
+        asset_content_type: application/zip
