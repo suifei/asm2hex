@@ -24,11 +24,13 @@ ifeq ($(PLATFORM),Windows)
                    -DLLVM_TARGETS_TO_BUILD="all" \
                    -G "Unix Makefiles"
     MAKE_FLAGS += -j8
-    CGO_LDFLAGS := -L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid
+    CGO_CFLAGS := -IC:\Program Files\Git\usr\local\include -O2 -Wall
+    CGO_LDFLAGS := -LC:\Program Files\Git\usr\local\lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid
     TARGET := windows
     KEYSTONE_BUILD_CMD := cmake $(CMAKE_FLAGS) .. && time make $(MAKE_FLAGS) && make install
 else ifeq ($(PLATFORM),Darwin)
     SUDO := sudo
+    CGO_CFLAGS := -I/usr/local/include -O2 -Wall
     CGO_LDFLAGS := -L/usr/local/lib -lcapstone -lkeystone
     TARGET := darwin
     KEYSTONE_BUILD_CMD := ../make-lib.sh && $(SUDO) make install
@@ -91,7 +93,7 @@ lib:
 build:
 	@mkdir -p ./build && \
 	CGO_ENABLED=1 \
-	CGO_CFLAGS="-I/usr/local/include -O2 -Wall" \
+	CGO_CFLAGS="$(CGO_CFLAGS)" \
 	CGO_LDFLAGS="$(CGO_LDFLAGS)" \
 	fyne package --release --target $(TARGET) --icon ./theme/icons/asm2hex.png && \
 	rm -rf ./build/$(if $(filter $(PLATFORM),Windows),*.exe,*.app) && \
