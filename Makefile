@@ -24,8 +24,8 @@ ifeq ($(PLATFORM),Windows)
                    -DLLVM_TARGETS_TO_BUILD="all" \
                    -G "Unix Makefiles"
     MAKE_FLAGS += -j8
-    CGO_CFLAGS := -IC:\Program Files\Git\usr\local\include -O2 -Wall
-    CGO_LDFLAGS := -LC:\Program Files\Git\usr\local\lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid
+    CGO_CFLAGS := -I/usr/local/include -O2 -Wall
+    CGO_LDFLAGS := -L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid
     TARGET := windows
     KEYSTONE_BUILD_CMD := cmake $(CMAKE_FLAGS) .. && time make $(MAKE_FLAGS) && make install
 else ifeq ($(PLATFORM),Darwin)
