@@ -41,10 +41,13 @@ jobs:
         choco install mingw
         choco install cmake
         choco install git
-        set CGO_ENABLED=1
-        set CGO_CFLAGS="-IC:/Program Files/Git/usr/local/include -O2 -Wall"
-        set CGO_LDFLAGS="-LC:/Program Files/Git/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
-        set
+        $env:CGO_ENABLED = "1"
+        $env:CGO_CFLAGS = "-IC:/Program Files/Git/usr/local/include -O2 -Wall"
+        $env:CGO_LDFLAGS = "-LC:/Program Files/Git/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+        $env:CGO_ENABLED
+        $env:CGO_CFLAGS
+        $env:CGO_LDFLAGS
+        Get-ChildItem Env:
         
     - name: 安装依赖 (macOS) (Install dependencies (macOS))
       if: matrix.os == 'macos-latest'
