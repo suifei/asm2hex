@@ -45,27 +45,48 @@ help:
 
 clean:
 	@rm -rf tmp build && \
-	echo "Cleaned up temporary files"
+	rm -rf $(INSTALL_PREFIX)/include/capstone && \
+	rm -rf $(INSTALL_PREFIX)/include/keystone && \
+	rm -f $(INSTALL_PREFIX)/lib/libcapstone* && \
+	rm -f $(INSTALL_PREFIX)/lib/libkeystone* && \
+	echo "Cleaned up temporary files" && \
+	echo "Removed Capstone and Keystone libraries" && \
+	echo "Removed build files" && \
+	echo "Cleaned up successfully"
 
 lib:
-	@mkdir -p ./tmp && \
-	cd ./tmp && \
-	git clone https://github.com/capstone-engine/capstone.git && \
-	cd capstone && \
-	git checkout $(CAPSTONE_VERSION) && \
-	mkdir build && \
-	cd build && \
-	cmake $(CMAKE_FLAGS) .. && \
-	$(SUDO) cmake --build . --config Release --target install && \
-	cd ../.. && \
-	git clone https://github.com/keystone-engine/keystone.git && \
-	cd keystone && \
-	git checkout $(KEYSTONE_VERSION) && \
-	mkdir build && \
-	cd build && \
-	$(KEYSTONE_BUILD_CMD) && \
-	cd ../.. && \
-	echo "Libraries installed successfully for $(PLATFORM)"
+	@if [ -d "$(INSTALL_PREFIX)/lib" ] && \
+	   [ -f "$(INSTALL_PREFIX)/lib/libcapstone.a" ] && \
+	   [ -f "$(INSTALL_PREFIX)/lib/libkeystone.a" ]; then \
+		echo "Capstone and Keystone libraries are already installed"; \
+	else \
+		mkdir -p ./tmp && \
+		cd ./tmp && \
+		if [ ! -d "capstone" ]; then \
+			git clone https://github.com/capstone-engine/capstone.git && \
+			cd capstone && \
+			git checkout $(CAPSTONE_VERSION) && \
+			mkdir build && \
+			cd build && \
+			cmake $(CMAKE_FLAGS) .. && \
+			$(SUDO) cmake --build . --config Release --target install; \
+		else \
+			echo "Capstone library is already built, skipping build"; \
+		fi && \
+		cd ../.. && \
+		if [ ! -d "keystone" ]; then \
+			git clone https://github.com/keystone-engine/keystone.git && \
+			cd keystone && \
+			git checkout $(KEYSTONE_VERSION) && \
+			mkdir build && \
+			cd build && \
+			$(KEYSTONE_BUILD_CMD); \
+		else \
+			echo "Keystone library is already built, skipping build"; \
+		fi && \
+		cd ../.. && \
+		echo "Libraries installed successfully for $(PLATFORM)"; \
+	fi
 
 build:
 	@mkdir -p ./build && \
