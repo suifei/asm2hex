@@ -58,11 +58,14 @@ jobs:
       run: |
         mkdir release
         cp ./build/*.exe ./release/
-        7z a -tzip asm2hex-windows-${{ github.ref }}.zip ./release/*
+        7z a -tzip asm2hex-windows-${{ github.ref_name }}.zip ./release/*
 
     - name: 压缩发布资源 (macOS) (Compress Release Asset (macOS))
       if: matrix.os == 'macos-latest'
       run: |
         mkdir release
+        pwd
+        ls -Al
         cp -r ./build/*.app ./release/
-        zip -r asm2hex-macos-${{ github.ref }}.zip ./release/*
+        ls ./release
+        zip -r asm2hex-macos-${{ github.ref_name }}.zip ./release/*
