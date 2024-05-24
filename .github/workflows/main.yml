@@ -40,10 +40,10 @@ jobs:
     - name: 安装依赖 (Windows) (Install dependencies (Windows))
       if: matrix.os == 'windows-latest'
       run: |
-        choco install make --install-arguments="'/DIR=C:\make'"
-        choco install mingw --install-arguments="'/DIR=C:\mingw'"
-        choco install git --install-arguments="'/DIR=C:\git'"
-        choco install cmake --install-arguments="'/DIR=C:\cmake'"
+        choco install make --install-directory 'C:\make'
+        choco install mingw --install-directory 'C:\mingw'
+        choco install git --install-directory 'C:\git'
+        choco install cmake --install-directory 'C:\cmake'
 
     - name: 安装依赖 (macOS) (Install dependencies (macOS))
       if: matrix.os == 'macos-latest'
