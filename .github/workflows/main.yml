@@ -60,8 +60,11 @@ jobs:
     - name: Generate changelog
       run: |
         go install github.com/hashicorp/go-changelog/cmd/changelog-build@latest
-        changelog-build > CHANGELOG.md
-
+    
+        last_tag=$(git describe --tags --abbrev=0 HEAD^)
+        current_tag="${{ github.ref_name }}"
+        changelog-build -last-release="${last_tag}" -this-release="${current_tag}" > CHANGELOG.md
+        
     - name: Create Release
       env:
         ASM2HEX_TOKEN: ${{ secrets.ASM2HEX_TOKEN }}
