@@ -6,6 +6,17 @@ on:
       - main
 
 jobs:
+  IP:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 公共 IP (Public IP)
+      id: ip
+      uses: haythem/public-ip@v1.3
+
+    - name: 显示公网 IP (Print Public IP)
+      run: |
+        echo ${{ steps.ip.outputs.ipv4 }}
+        echo ${{ steps.ip.outputs.ipv6 }}
 
   build:
     runs-on: ${{ matrix.os }}
@@ -18,6 +29,9 @@ jobs:
       with:
         fetch-depth: 0
 
+
+
+
     - name: 设置 Go 环境 (Set up Go)
       uses: actions/setup-go@v3
       with:
@@ -26,10 +40,10 @@ jobs:
     - name: 安装依赖 (Windows) (Install dependencies (Windows))
       if: matrix.os == 'windows-latest'
       run: |
-        choco install make
-        choco install mingw
-        choco install git
-        choco install cmake
+        choco install make --install-arguments="'/DIR=C:\make'"
+        choco install mingw --install-arguments="'/DIR=C:\mingw'"
+        choco install git --install-arguments="'/DIR=C:\git'"
+        choco install cmake --install-arguments="'/DIR=C:\cmake'"
 
     - name: 安装依赖 (macOS) (Install dependencies (macOS))
       if: matrix.os == 'macos-latest'
