@@ -53,8 +53,8 @@ jobs:
         brew install git
         brew install cmake
         export CGO_ENABLED=1
-        export CGO_CFLAGS=-I/usr/local/include -O2 -Wall
-        export CGO_LDFLAGS=-L/usr/local/lib -lcapstone -lkeystone
+        export CGO_CFLAGS="-I/usr/local/include -O2 -Wall"
+        export CGO_LDFLAGS="-L/usr/local/lib -lcapstone -lkeystone"
         export
         
     - name: 安装 Fyne (Install Fyne)
