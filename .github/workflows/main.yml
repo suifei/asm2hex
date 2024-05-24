@@ -8,7 +8,6 @@ on:
   push:
     branches:
       - main
-      
 jobs:
 
   build:
@@ -57,13 +56,6 @@ jobs:
     - name: Build project
       run: make build
 
-    - name: Generate changelog
-      run: |
-        # Install go-changelog
-        go install github.com/hashicorp/go-changelog/cmd/changelog-build@latest
-        # Generate changelog
-        changelog-build > CHANGELOG.md
-
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -72,7 +64,8 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body_path: CHANGELOG.md
+        body: |
+          Please see the [comparison view](https://github.com/${{ github.repository }}/compare/${{ github.event.base_ref }}...${{ github.ref }}) for the changes included in this release.
         draft: false
         prerelease: false
 
