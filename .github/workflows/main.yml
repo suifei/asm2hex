@@ -29,9 +29,6 @@ jobs:
       with:
         fetch-depth: 0
 
-
-
-
     - name: 设置 Go 环境 (Set up Go)
       uses: actions/setup-go@v3
       with:
@@ -40,10 +37,15 @@ jobs:
     - name: 安装依赖 (Windows) (Install dependencies (Windows))
       if: matrix.os == 'windows-latest'
       run: |
-        choco install make --dir 'C:\make'
-        choco install mingw --dir 'C:\mingw'
-        choco install git --dir 'C:\git'
-        choco install cmake --dir 'C:\cmake'
+        # choco install make --dir 'C:\make'
+        # choco install mingw --dir 'C:\mingw'
+        # choco install git --dir 'C:\git'
+        # choco install cmake --dir 'C:\cmake'
+        powershell.exe -ExecutionPolicy RemoteSigned -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; Invoke-RestMethod -Uri 'https://get.scoop.sh' | Invoke-Expression"
+        scoop update
+        scoop install cmake git
+        scoop install mingw-winlibs
+        
 
     - name: 安装依赖 (macOS) (Install dependencies (macOS))
       if: matrix.os == 'macos-latest'
