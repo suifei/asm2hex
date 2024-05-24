@@ -57,8 +57,8 @@ jobs:
       run: |
         echo "CGO_ENABLED=1" >> $GITHUB_ENV
         echo "CGO_CFLAGS=" >> $GITHUB_ENV
-        echo "CGO_CFLAGS=${{ matrix.os == 'windows-latest' && '-IC:/Program\ Files/Git/usr/local/include -O2 -Wall' || '-I/usr/local/include -O2 -Wall' }}" >> $GITHUB_ENV
-        echo "CGO_LDFLAGS=${{ matrix.os == 'windows-latest' && '-LC:/Program\ Files/Git/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}" >> $GITHUB_ENV
+        echo 'CGO_CFLAGS="${{ matrix.os == 'windows-latest' && '-IC:/Program Files/Git/usr/local/include -O2 -Wall' || '-I/usr/local/include -O2 -Wall' }}"' >> $GITHUB_ENV
+        echo 'CGO_LDFLAGS="${{ matrix.os == 'windows-latest' && '-LC:/Program Files/Git/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}"' >> $GITHUB_ENV
     
     - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
       run: make lib
