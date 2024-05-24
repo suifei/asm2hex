@@ -24,7 +24,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: 1.18
+        go-version: 1.22.3
 
     - name: Install dependencies (Windows)
       if: matrix.os == 'windows-latest'
@@ -56,16 +56,22 @@ jobs:
     - name: Build project
       run: make build
 
+    - name: Generate changelog
+      run: |
+        # Install go-changelog
+        go install github.com/hashicorp/go-changelog/cmd/changelog-build@latest
+        # Generate changelog
+        changelog-build > CHANGELOG.md
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.ASM2HEX_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: |
-          Please see the [comparison view](https://github.com/${{ github.repository }}/compare/${{ github.event.base_ref }}...${{ github.ref }}) for the changes included in this release.
+        body_path: CHANGELOG.md
         draft: false
         prerelease: false
 
@@ -87,7 +93,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.ASM2HEX_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./asm2hex-windows-${{ github.ref }}.zip
@@ -98,7 +104,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.ASM2HEX_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./asm2hex-macos-${{ github.ref }}.zip
