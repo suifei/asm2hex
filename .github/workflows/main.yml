@@ -43,8 +43,7 @@ jobs:
         # choco install cmake --dir 'C:\cmake'
         powershell.exe -ExecutionPolicy RemoteSigned -Command "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; Invoke-RestMethod -Uri 'https://get.scoop.sh' | Invoke-Expression"
         scoop update
-        scoop install cmake git
-        scoop install mingw-winlibs
+        scoop install make cmake git mingw
         
 
     - name: 安装依赖 (macOS) (Install dependencies (macOS))
