@@ -1,4 +1,4 @@
-name: Build and Release
+name: 构建和发布 (Build and Release)
 
 on:
   push:
@@ -18,12 +18,12 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up Go
+    - name: 设置 Go 环境 (Set up Go)
       uses: actions/setup-go@v3
       with:
         go-version: 1.22.3
 
-    - name: Install dependencies (Windows)
+    - name: 安装依赖 (Windows) (Install dependencies (Windows))
       if: matrix.os == 'windows-latest'
       run: |
         choco install make
@@ -31,38 +31,38 @@ jobs:
         choco install git
         choco install cmake
 
-    - name: Install dependencies (macOS)
+    - name: 安装依赖 (macOS) (Install dependencies (macOS))
       if: matrix.os == 'macos-latest'
       run: |
         brew install make
         brew install git
         brew install cmake
 
-    - name: Install Fyne
+    - name: 安装 Fyne (Install Fyne)
       run: go install fyne.io/fyne/v2/cmd/fyne@latest
 
-    - name: Set up environment variables
+    - name: 设置环境变量 (Set up environment variables)
       run: |
         echo "CGO_ENABLED=1" >> $GITHUB_ENV
         echo "CGO_CFLAGS=-I/usr/local/include -O2 -Wall" >> $GITHUB_ENV
         echo "CGO_LDFLAGS=${{ matrix.os == 'windows-latest' && '-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}" >> $GITHUB_ENV
 
-    - name: Build Capstone and Keystone libraries
+    - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
       run: make lib
 
-    - name: Build project
+    - name: 构建项目 (Build project)
       run: make build
 
-    - name: Compress Release Asset (Windows)
+    - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
       if: matrix.os == 'windows-latest'
       run: |
         mkdir release
-        cp ./build/asm2hex.exe ./release/
+        cp ./build/*.exe ./release/
         7z a -tzip asm2hex-windows-${{ github.ref }}.zip ./release/*
 
-    - name: Compress Release Asset (macOS)
+    - name: 压缩发布资源 (macOS) (Compress Release Asset (macOS))
       if: matrix.os == 'macos-latest'
       run: |
         mkdir release
-        cp -r ./build/asm2hex.app ./release/
+        cp -r ./build/*.app ./release/
         zip -r asm2hex-macos-${{ github.ref }}.zip ./release/*
