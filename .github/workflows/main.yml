@@ -61,7 +61,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        ASM2HEX_TOKEN: ${{ secrets.ASM2HEX_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
@@ -88,7 +88,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       uses: actions/upload-release-asset@v1
       env:
-        ASM2HEX_TOKEN: ${{ secrets.ASM2HEX_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./asm2hex-windows-${{ github.ref }}.zip
@@ -99,7 +99,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       uses: actions/upload-release-asset@v1
       env:
-        ASM2HEX_TOKEN: ${{ secrets.ASM2HEX_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./asm2hex-macos-${{ github.ref }}.zip
