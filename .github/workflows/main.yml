@@ -44,9 +44,10 @@ jobs:
     - name: 设置环境变量 (Set up environment variables)
       run: |
         echo "CGO_ENABLED=1" >> $GITHUB_ENV
-        echo "CGO_CFLAGS=-I/usr/local/include -O2 -Wall" >> $GITHUB_ENV
-        echo "CGO_LDFLAGS=${{ matrix.os == 'windows-latest' && '-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}" >> $GITHUB_ENV
-
+        echo "CGO_CFLAGS=" >> $GITHUB_ENV
+        echo "CGO_CFLAGS=${{ matrix.os == 'windows-latest' && '-IC:\Program Files\Git\usr\local\include -O2 -Wall' || '-I/usr/local/include -O2 -Wall' }}" >> $GITHUB_ENV
+        echo "CGO_LDFLAGS=${{ matrix.os == 'windows-latest' && '-LC:\Program Files\Git\usr\local\lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}" >> $GITHUB_ENV
+    
     - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
       run: make lib
 
@@ -64,8 +65,5 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         mkdir release
-        pwd
-        ls -Al
         cp -r ./build/*.app ./release/
-        ls ./release
         zip -r asm2hex-macos-${{ github.ref_name }}.zip ./release/*
