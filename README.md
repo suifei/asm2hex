@@ -6,6 +6,7 @@
 [![GitHub followers](https://img.shields.io/github/followers/suifei.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/suifei?tab=followers)
 [![Twitter Follow](https://img.shields.io/twitter/follow/csuifei?style=social)](https://twitter.com/csuifei)
 
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/suifei/asm2hex/.github/workflows/main.yml)](https://github.com/suifei/asm2hex/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/suifei/asm2hex)](https://goreportcard.com/report/github.com/suifei/asm2hex)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GoDoc](https://godoc.org/github.com/suifei/asm2hex?status.svg)](https://pkg.go.dev/github.com/suifei/asm2hex)
