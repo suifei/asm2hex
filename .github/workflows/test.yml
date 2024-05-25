@@ -15,23 +15,16 @@ jobs:
     - name: 下载并解压 MSYS2 (Download and extract MSYS2)
       run: |
         Invoke-WebRequest -Uri "https://github.com/suifei/asm2hex/releases/download/v1.1/msys64.7z" -OutFile "msys64.7z"
-        7z x msys64.7z -o"C:\" -aoa
-        
+        7z x msys64.7z -o"C:\" -aos
+    #-aoa 
+    
     - name: 将 MSYS2 添加到环境变量 (Add MSYS2 to environment variables)
       run: |
         echo "C:\msys64\usr\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         echo "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-    - name: 缓存 MSYS2 包 (Cache MSYS2 packages)
-      uses: actions/cache@v3
-      with:
-        path: C:\msys64\var\cache\pacman\pkg
-        key: ${{ runner.os }}-msys2-${{ hashFiles('C:\msys64\etc\pacman.d\mirrorlist.mingw32') }}-${{ hashFiles('C:\msys64\etc\pacman.d\mirrorlist.mingw64') }}
-        restore-keys: |
-          ${{ runner.os }}-msys2-
-
     - name: 进入 MSYS2 环境并安装依赖 (Enter MSYS2 environment and install dependencies)
-      shell: msys2 {0}
+      shell: mingw64 {0}
       run: |
         pacman -Syu --noconfirm
         pacman -S --noconfirm mingw-w64-x86_64-go mingw-w64-x86_64-make mingw-w64-x86_64-cmake
