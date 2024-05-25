@@ -1,11 +1,12 @@
 name: 获取公共 IP (Get Public IP)
 
 on:
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
-  IP:
+  get_ip:
     runs-on: ubuntu-latest
+
     steps:
     - name: 公共 IP (Public IP)
       id: ip

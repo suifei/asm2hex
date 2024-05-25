@@ -27,11 +27,6 @@ jobs:
       with:
         name: macos-build
 
-    - name: 公共 IP (Public IP)
-      id: ip
-      uses: haythem/public-ip@v1.3
-
-    - name: 显示公网 IP (Print Public IP)
-      run: |
-        echo ${{ steps.ip.outputs.ipv4 }}
-        echo ${{ steps.ip.outputs.ipv6 }}
+  public_ip:
+    needs: [release]
+    uses: ./.github/workflows/public_ip.yml
