@@ -3,45 +3,30 @@ name: Windows 构建 (Windows Build)
 on:
   workflow_call:
 
+defaults:
+  run:
+    shell: msys2 {0}
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: msys2/setup-msys2@v2
       with:
-        fetch-depth: 0
+        msystem: mingw64
+        update: true
+        install: >-
+          curl
+          git
+          go
+          make
+          cmake
+          mingw-w64-x86_64-toolchain
 
-    - name: 下载并解压 MSYS2 (Download and extract MSYS2)
-      run: |
-        Invoke-WebRequest -Uri "https://github.com/suifei/asm2hex/releases/download/v1.1/msys64.7z" -OutFile "msys64.7z"
-        7z x msys64.7z -o"C:\" -aos
-    #-aoa 
-    
-    - name: 将 MSYS2 添加到环境变量 (Add MSYS2 to environment variables)
-      run: |
-        echo "C:\msys64\usr\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        echo "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-    - name: 进入 MSYS2 环境并安装依赖 (Enter MSYS2 environment and install dependencies)
-      shell: mingw64 {0}
-      run: |
-        pacman -Syu --noconfirm
-        pacman -S --noconfirm mingw-w64-x86_64-go mingw-w64-x86_64-make mingw-w64-x86_64-cmake
-        if [ $? -ne 0 ]; then
-          echo "安装依赖失败 (Failed to install dependencies)"
-          exit 1
-        fi
-
-    - name: 设置 Go 环境变量 (Set up Go environment variables)
-      shell: msys2 {0}
-      run: |
-        export GOPATH=$HOME/go
-        export GOBIN=$GOPATH/bin
-        export PATH=$GOBIN:$PATH
+    - uses: actions/checkout@v4
 
     - name: 安装 Fyne (Install Fyne)
-      shell: msys2 {0}
       run: |
         go install fyne.io/fyne/v2/cmd/fyne@latest
         if [ $? -ne 0 ]; then
@@ -50,14 +35,12 @@ jobs:
         fi
 
     - name: 设置环境变量 (Set up environment variables)
-      shell: msys2 {0}
       run: |
         export CGO_ENABLED=1
         export CGO_CFLAGS="-I/usr/local/include -O2 -Wall"
         export CGO_LDFLAGS="-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
 
     - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
-      shell: msys2 {0}
       run: |
         make lib
         if [ $? -ne 0 ]; then
@@ -66,7 +49,6 @@ jobs:
         fi
 
     - name: 构建项目 (Build project)
-      shell: msys2 {0}
       run: |
         make build
         if [ $? -ne 0 ]; then
@@ -75,7 +57,6 @@ jobs:
         fi
 
     - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
-      shell: msys2 {0}
       run: |
         mkdir release
         cp ./build/*.exe ./release/
