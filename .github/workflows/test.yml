@@ -11,10 +11,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { icon: '⬛', sys: mingw32 }
+        #   - { icon: '⬛', sys: mingw32 }
           - { icon: '🟦', sys: mingw64 }
-          - { icon: '🟨', sys: ucrt64 }
-          - { icon: '🟧', sys: clang64 }
+        #   - { icon: '🟨', sys: ucrt64 }
+        #   - { icon: '🟧', sys: clang64 }
 
     name: 🚧${{ matrix.icon }} ${{ matrix.sys }}
 
@@ -41,6 +41,7 @@ jobs:
           cmake:p
           ninja:p
           go:p
+          7zip:p
 
     - name: '🚧 Install Fyne'
       run: |
