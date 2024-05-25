@@ -6,27 +6,30 @@ on:
       - main
 
 jobs:
-  windows_build:
-    uses: ./.github/workflows/windows.yml
+  windows_build_test:
+    uses: ./.github/workflows/test.yml
+    
+  # windows_build:
+  #   uses: ./.github/workflows/windows.yml
 
-  macos_build:
-    uses: ./.github/workflows/macos.yml
+  # macos_build:
+  #   uses: ./.github/workflows/macos.yml
 
-  release:
-    needs: [windows_build, macos_build]
-    runs-on: ubuntu-latest
+  # release:
+  #   needs: [windows_build, macos_build]
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: 下载 Windows 构建产物 (Download Windows Build Artifacts)
-      uses: actions/download-artifact@v3
-      with:
-        name: windows-build
+  #   steps:
+  #   - name: 下载 Windows 构建产物 (Download Windows Build Artifacts)
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: windows-build
 
-    - name: 下载 macOS 构建产物 (Download macOS Build Artifacts)
-      uses: actions/download-artifact@v3
-      with:
-        name: macos-build
+  #   - name: 下载 macOS 构建产物 (Download macOS Build Artifacts)
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: macos-build
 
-  public_ip:
-    needs: [release]
-    uses: ./.github/workflows/public_ip.yml
+  # public_ip:
+  #   needs: [release]
+  #   uses: ./.github/workflows/public_ip.yml

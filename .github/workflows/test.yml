@@ -1,0 +1,61 @@
+name: Windows 构建 (Windows Build)
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: 设置 Go 环境 (Set up Go)
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.22.3
+
+    - name: 设置 MSYS2 环境 (Set up MSYS2)
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+        install: >-
+          make
+          git
+          mingw-w64-x86_64-toolchain
+          mingw-w64-x86_64-cmake
+
+    - name: 安装 Fyne (Install Fyne)
+      shell: msys2 {0}
+      run: go install fyne.io/fyne/v2/cmd/fyne@latest
+
+    - name: 设置环境变量 (Set up environment variables)
+      shell: msys2 {0}
+      run: |
+        export CGO_ENABLED=1
+        export CGO_CFLAGS="-I/usr/local/include -O2 -Wall"
+        export CGO_LDFLAGS="-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+
+    - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
+      shell: msys2 {0}
+      run: make lib
+
+    - name: 构建项目 (Build project)
+      shell: msys2 {0}
+      run: make build
+
+    - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
+      shell: msys2 {0}
+      run: |
+        mkdir release
+        cp ./build/*.exe ./release/
+        7z a -tzip asm2hex-windows-${{ github.ref_name }}.zip ./release/*
+
+    - name: 上传构建产物 (Upload Build Artifacts)
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-build
+        path: ./release/
