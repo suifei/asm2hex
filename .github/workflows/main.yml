@@ -48,8 +48,8 @@ jobs:
         export CGO_ENABLED=1
         export GOOS=windows
         export GOARCH=amd64
-        export CGO_LDFLAGS="-static -L/System/Volumes/Data/opt/homebrew/Cellar/mingw-w64/11.0.1_1/toolchain-i686/i686-w64-mingw32/lib -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
-        go build -o build/asm2hex.exe
+        export CGO_LDFLAGS="-static -Lopt/homebrew/Cellar/mingw-w64/11.0.1_1/toolchain-i686/i686-w64-mingw32/lib -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+        make build
     
 
     - name: 压缩发布资源 (macOS) (Compress Release Asset (macOS))
