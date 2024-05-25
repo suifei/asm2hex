@@ -30,13 +30,8 @@ jobs:
     - name: 设置环境变量 (Set up environment variables)
       run: |
         echo "CGO_ENABLED=1" >> $env:GITHUB_ENV
-        echo 'CGO_CFLAGS<<EOF' >> $env:GITHUB_ENV
-        echo '-I"C:\Program Files\Git\usr\local\include" -O2 -Wall' >> $env:GITHUB_ENV
-        echo 'EOF' >> $env:GITHUB_ENV
-        echo 'CGO_LDFLAGS<<EOF' >> $env:GITHUB_ENV
-        echo '-L"C:\Program Files\Git\usr\local\lib" -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' >> $env:GITHUB_ENV
-        echo 'EOF' >> $env:GITHUB_ENV
-        
+        echo "CGO_CFLAGS=-IC:\Program Files\Git\usr\local\include -O2 -Wall" >> $env:GITHUB_ENV
+        echo "CGO_LDFLAGS=-LC:\Program Files\Git\usr\local\lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid" >> $env:GITHUB_ENV
 
     - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
       run: make lib
