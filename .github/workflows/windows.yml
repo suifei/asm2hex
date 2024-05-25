@@ -37,7 +37,7 @@ jobs:
       run: make lib
 
     - name: 构建项目 (Build project)
-      run: fyne package --release --target windows --icon ./theme/icons/asm2hex.png 
+      run: CGO_ENABLED = "1" CGO_CFLAGS = "-IC:\Program Files\Git\usr\local\include -O2 -Wall" CGO_LDFLAGS = "-LC:\Program Files\Git\usr\local\lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid" fyne package --release --target windows --icon ./theme/icons/asm2hex.png 
 
     - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
       run: |
