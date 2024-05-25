@@ -43,12 +43,15 @@ jobs:
 
     - name: 构建 Windows 版本 (Build for Windows)
       run: |
+        pwd
+        find / -name libcapstone.a 
+        
         export CC=x86_64-w64-mingw32-gcc
         export CXX=x86_64-w64-mingw32-g++
         export CGO_ENABLED=1
         export GOOS=windows
         export GOARCH=amd64
-        export CGO_LDFLAGS="-static -L/opt/homebrew/Cellar/mingw-w64/11.0.1_1/toolchain-x86_64/x86_64-w64-mingw32/lib -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+        export CGO_LDFLAGS="-static -L /opt/homebrew/Cellar/mingw-w64/11.0.1_1/lib -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
         go build -o build/asm2hex.exe
     
 
