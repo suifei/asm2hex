@@ -15,18 +15,3 @@ jobs:
   release:
     needs: [windows_build, macos_build]
     runs-on: ubuntu-latest
-
-    steps:
-    - name: 下载 Windows 构建产物 (Download Windows Build Artifacts)
-      uses: actions/download-artifact@v3
-      with:
-        name: windows-build
-
-    - name: 下载 macOS 构建产物 (Download macOS Build Artifacts)
-      uses: actions/download-artifact@v3
-      with:
-        name: macos-build
-
-  public_ip:
-    needs: [release]
-    uses: ./.github/workflows/public_ip.yml
