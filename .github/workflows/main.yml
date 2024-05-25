@@ -6,8 +6,12 @@ on:
       - main
 
 jobs:
+
   build:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v3
@@ -19,12 +23,21 @@ jobs:
       with:
         go-version: 1.22.3
 
+    - name: 安装依赖 (Windows) (Install dependencies (Windows))
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install make
+        choco install mingw
+        choco install cmake
+        choco install git
+        
+
     - name: 安装依赖 (macOS) (Install dependencies (macOS))
+      if: matrix.os == 'macos-latest'
       run: |
         brew install make
         brew install git
         brew install cmake
-        brew install mingw-w64
 
     - name: 安装 Fyne (Install Fyne)
       run: go install fyne.io/fyne/v2/cmd/fyne@latest
@@ -32,37 +45,29 @@ jobs:
     - name: 设置环境变量 (Set up environment variables)
       run: |
         echo "CGO_ENABLED=1" >> $GITHUB_ENV
-        echo "CGO_CFLAGS=-I/usr/local/include -O2 -Wall" >> $GITHUB_ENV
-        echo "CGO_LDFLAGS=-L/usr/local/lib -lcapstone -lkeystone" >> $GITHUB_ENV
-
+        echo "CGO_CFLAGS=" >> $GITHUB_ENV
+        echo 'CGO_CFLAGS="${{ matrix.os == 'windows-latest' && '-IC:/Program Files/Git/usr/local/include -O2 -Wall' || '-I/usr/local/include -O2 -Wall' }}"' >> $GITHUB_ENV
+        echo 'CGO_LDFLAGS="${{ matrix.os == 'windows-latest' && '-LC:/Program Files/Git/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}"' >> $GITHUB_ENV
+    
     - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
       run: make lib
 
-    - name: 构建 macOS 版本 (Build for macOS)
+    - name: 构建项目 (Build project)
       run: make build
 
-    - name: 构建 Windows 版本 (Build for Windows)
+    - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
+      if: matrix.os == 'windows-latest'
       run: |
-        export CC=x86_64-w64-mingw32-gcc
-        export CXX=x86_64-w64-mingw32-g++
-        export CGO_ENABLED=1
-        export GOOS=windows
-        export GOARCH=amd64
-        export CGO_LDFLAGS="-static -Lopt/homebrew/Cellar/mingw-w64/11.0.1_1/toolchain-i686/i686-w64-mingw32/lib -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
-        make build
-    
+        mkdir release
+        cp ./build/*.exe ./release/
+        7z a -tzip asm2hex-windows-${{ github.ref_name }}.zip ./release/*
 
     - name: 压缩发布资源 (macOS) (Compress Release Asset (macOS))
+      if: matrix.os == 'macos-latest'
       run: |
         mkdir release
         cp -r ./build/*.app ./release/
         zip -r asm2hex-macos-${{ github.ref_name }}.zip ./release/*
-
-    - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
-      run: |
-        mkdir release
-        cp ./build/asm2hex.exe ./release/
-        zip -r asm2hex-windows-${{ github.ref_name }}.zip ./release/*
 
   dispatch:
     needs: build
