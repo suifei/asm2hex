@@ -6,18 +6,6 @@ on:
       - main
 
 jobs:
-  IP:
-    runs-on: ubuntu-latest
-    steps:
-    - name: 公共 IP (Public IP)
-      id: ip
-      uses: haythem/public-ip@v1.3
-
-    - name: 显示公网 IP (Print Public IP)
-      run: |
-        echo ${{ steps.ip.outputs.ipv4 }}
-        echo ${{ steps.ip.outputs.ipv6 }}
-
   build:
     runs-on: macos-latest
 
@@ -60,6 +48,7 @@ jobs:
         export CGO_ENABLED=1
         export GOOS=windows
         export GOARCH=amd64
+        export CGO_LDFLAGS="-static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
         go build -o build/asm2hex.exe
 
     - name: 压缩发布资源 (macOS) (Compress Release Asset (macOS))
@@ -73,3 +62,19 @@ jobs:
         mkdir release
         cp ./build/asm2hex.exe ./release/
         zip -r asm2hex-windows-${{ github.ref_name }}.zip ./release/*
+
+  dispatch:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: 触发获取公共 IP 的工作流程 (Trigger Get Public IP Workflow)
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.rest.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: 'ip.yml',
+            ref: 'main'
+          })
