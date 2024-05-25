@@ -18,13 +18,13 @@ jobs:
 
     steps:
     - name: 下载 Windows 构建产物 (Download Windows Build Artifacts)
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: windows-mingw64-build
         path: ./release/windows-mingw64
 
     - name: 下载 macOS 构建产物 (Download macOS Build Artifacts)
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@4
       with:
         name: macos-build
         path: ./release/macos
