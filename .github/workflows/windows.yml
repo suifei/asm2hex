@@ -82,7 +82,7 @@ jobs:
       run: |
         mkdir release
         cp ./build/*.exe ./release/
-        7z a -tzip asm2hex-windows-${{ matrix.sys }}-${{ github.ref_name }}.zip ./release/*
+        7z a -tzip asm2hex-windows-${{ matrix.sys }}.zip ./release/*
 
     - name: '🚀 Upload Build Artifacts'
       uses: actions/upload-artifact@v3

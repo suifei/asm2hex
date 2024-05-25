@@ -46,8 +46,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release/windows-mingw64/asm2hex-windows-mingw64-${{ github.ref_name }}.zip
-        asset_name: asm2hex-windows-mingw64-${{ github.ref_name }}.zip
+        asset_path: ./release/windows-mingw64/asm2hex-windows-mingw64.zip
+        asset_name: asm2hex-windows-mingw64.zip
         asset_content_type: application/zip
 
     - name: 上传 macOS 发布资源 (Upload macOS Release Assets)
