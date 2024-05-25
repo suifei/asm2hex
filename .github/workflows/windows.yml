@@ -37,12 +37,12 @@ jobs:
       run: make lib
 
     - name: 构建项目 (Build project)
-      run: make build
+      run: fyne package --release --target windows --icon ./theme/icons/asm2hex.png
 
     - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
       run: |
         mkdir release
-        cp ./build/*.exe ./release/
+        cp ./*.exe ./release/
         7z a -tzip asm2hex-windows-${{ github.ref_name }}.zip ./release/*
 
     - name: 上传构建产物 (Upload Build Artifacts)
