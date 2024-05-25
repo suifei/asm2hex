@@ -49,6 +49,8 @@ jobs:
           echo "安装 Fyne 失败 (Failed to install Fyne)"
           exit 1
         fi
+        export PATH="$(go env GOPATH)/bin:$PATH"
+        cp "$(go env GOPATH)/bin/fyne.exe" "$MSYSTEM_PREFIX/bin/"
 
     - name: '🚀 Set up environment variables'
       run: |
