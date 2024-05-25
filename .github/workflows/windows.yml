@@ -7,46 +7,85 @@ jobs:
   build:
     runs-on: windows-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        #   - { icon: '⬛', sys: mingw32 }
+          - { icon: '🟦', sys: mingw64 }
+        #   - { icon: '🟨', sys: ucrt64 }
+        #   - { icon: '🟧', sys: clang64 }
+
+    name: 🚧${{ matrix.icon }} ${{ matrix.sys }}
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
-    - uses: actions/checkout@v3
+    - name: '🧰 Checkout'
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: 设置 Go 环境 (Set up Go)
-      uses: actions/setup-go@v3
+    - name: '${{ matrix.icon }} Setup MSYS2'
+      uses: msys2/setup-msys2@v2
       with:
-        go-version: 1.22.3
+        msystem: ${{matrix.sys}}
+        update: true
+        install: >-
+          git
+          make
+        pacboy: >-
+          toolchain:p
+          cmake:p
+          ninja:p
+          go:p
+          7zip:p
 
-    - name: 安装依赖 (Windows) (Install dependencies (Windows))
+    - name: '🚧 Install Fyne'
       run: |
-        choco install make
-        choco install mingw
-        choco install cmake
-        choco install git
+        go install fyne.io/fyne/v2/cmd/fyne@latest
+        if [ $? -ne 0 ]; then
+          echo "安装 Fyne 失败 (Failed to install Fyne)"
+          exit 1
+        fi
+        export PATH="$(go env GOPATH)/bin:$PATH"
+        cp "$(go env GOPATH)/bin/fyne.exe" "$MSYSTEM_PREFIX/bin/"
 
-    - name: 安装 Fyne (Install Fyne)
-      run: go install fyne.io/fyne/v2/cmd/fyne@latest
-
-    - name: 设置环境变量 (Set up environment variables)
+    - name: '🚀 Set up environment variables'
       run: |
-        $env:CGO_ENABLED = "1"
-        $env:CGO_CFLAGS = "-IC:\Program Files\Git\usr\local\include -O2 -Wall"
-        $env:CGO_LDFLAGS = "-LC:\Program Files\Git\usr\local\lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+        export CGO_ENABLED=1
+        export CGO_CFLAGS="-I/$MSYSTEM_PREFIX/include -O2 -Wall"
+        export CGO_LDFLAGS="-L/$MSYSTEM_PREFIX/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+        export GOROOT="$(go env GOROOT)"
+        export GOPATH="$(go env GOPATH)"
+        export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
 
-    - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
-      run: make lib
+    - name: '📦 Build Capstone and Keystone libraries'
+      run: |
+        make lib
+        if [ $? -ne 0 ]; then
+          echo "构建 Capstone 和 Keystone 库失败 (Failed to build Capstone and Keystone libraries)"
+          exit 1
+        fi
 
-    - name: 构建项目 (Build project)
-      run: CGO_ENABLED = "1" CGO_CFLAGS = "-IC:\Program Files\Git\usr\local\include -O2 -Wall" CGO_LDFLAGS = "-LC:\Program Files\Git\usr\local\lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid" fyne package --release --target windows --icon ./theme/icons/asm2hex.png 
+    - name: '🏗️ Build project'
+      run: |
+        make build
+        if [ $? -ne 0 ]; then
+          echo "构建项目失败 (Failed to build project)"
+          exit 1
+        fi
 
-    - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
+    - name: '📁 Compress Release Asset (Windows)'
       run: |
         mkdir release
         cp ./build/*.exe ./release/
-        7z a -tzip asm2hex-windows-${{ github.ref_name }}.zip ./release/*
+        7z a -tzip asm2hex-windows-${{ matrix.sys }}-${{ github.ref_name }}.zip ./release/*
 
-    - name: 上传构建产物 (Upload Build Artifacts)
+    - name: '🚀 Upload Build Artifacts'
       uses: actions/upload-artifact@v3
       with:
-        name: windows-build
+        name: windows-${{ matrix.sys }}-build
         path: ./release/
