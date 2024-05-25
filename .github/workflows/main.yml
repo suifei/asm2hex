@@ -43,9 +43,6 @@ jobs:
 
     - name: 构建 Windows 版本 (Build for Windows)
       run: |
-        pwd
-        find / -name libole32.a 
-        
         export CC=x86_64-w64-mingw32-gcc
         export CXX=x86_64-w64-mingw32-g++
         export CGO_ENABLED=1
