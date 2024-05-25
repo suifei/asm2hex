@@ -29,14 +29,21 @@ jobs:
         name: macos-build
         path: ./release/macos
 
+    - name: 获取当前时间 (Get Current Time)
+      id: current-time
+      uses: 1466587594/get-current-time@v2
+      with:
+        format: YYYY-MM-DD-HH-mm-ss
+        utcOffset: "+08:00"
+
     - name: 创建发布 (Create Release)
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ github.ref_name }}
-        release_name: Release v${{ github.ref_name }}
+        tag_name: v${{ github.ref_name }}-${{ steps.current-time.outputs.formattedTime }}
+        release_name: Release v${{ github.ref_name }} (${{ steps.current-time.outputs.formattedTime }})
         draft: false
         prerelease: false
 
@@ -56,6 +63,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release/macos/asm2hex-macos-${{ github.ref_name }}.zip
-        asset_name: asm2hex-macos-${{ github.ref_name }}.zip
+        asset_path: ./release/macos/asm2hex-macos.zip
+        asset_name: asm2hex-macos.zip
         asset_content_type: application/zip
