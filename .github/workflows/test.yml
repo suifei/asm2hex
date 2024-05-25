@@ -55,6 +55,9 @@ jobs:
         export CGO_ENABLED=1
         export CGO_CFLAGS="-I/$MSYSTEM_PREFIX/include -O2 -Wall"
         export CGO_LDFLAGS="-L/$MSYSTEM_PREFIX/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+        export GOROOT="$(go env GOROOT)"
+        export GOPATH="$(go env GOPATH)"
+        export PATH="$GOROOT/bin:$GOPATH/bin:$PATH"
 
     - name: '📦 Build Capstone and Keystone libraries'
       run: |
