@@ -11,21 +11,3 @@ jobs:
 
   macos_build:
     uses: ./.github/workflows/macos.yml
-
-  release:
-    needs: [windows_build, macos_build]
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: 下载 Windows 构建产物 (Download Windows Build Artifacts)
-      uses: actions/download-artifact@v3
-      with:
-        name: windows-mingw64-build
-        path: ./release/windows-mingw64
-
-    - name: 下载 macOS 构建产物 (Download macOS Build Artifacts)
-      uses: actions/download-artifact@v3
-      with:
-        name: macos-build
-        path: ./release/macos
-    
