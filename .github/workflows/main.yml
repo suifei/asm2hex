@@ -15,3 +15,47 @@ jobs:
   release:
     needs: [windows_build, macos_build]
     runs-on: ubuntu-latest
+
+    steps:
+    - name: 下载 Windows 构建产物 (Download Windows Build Artifacts)
+      uses: actions/download-artifact@v3
+      with:
+        name: windows-mingw64-build
+        path: ./release/windows-mingw64
+
+    - name: 下载 macOS 构建产物 (Download macOS Build Artifacts)
+      uses: actions/download-artifact@v3
+      with:
+        name: macos-build
+        path: ./release/macos
+
+    - name: 创建发布 (Create Release)
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: 上传 Windows 发布资源 (Upload Windows Release Assets)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release/windows-mingw64/asm2hex-windows-mingw64-${{ github.ref_name }}.zip
+        asset_name: asm2hex-windows-mingw64-${{ github.ref_name }}.zip
+        asset_content_type: application/zip
+
+    - name: 上传 macOS 发布资源 (Upload macOS Release Assets)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release/macos/asm2hex-macos-${{ github.ref_name }}.zip
+        asset_name: asm2hex-macos-${{ github.ref_name }}.zip
+        asset_content_type: application/zip
