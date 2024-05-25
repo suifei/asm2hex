@@ -3,30 +3,46 @@ name: Windows 构建 (Windows Build)
 on:
   workflow_call:
 
-defaults:
-  run:
-    shell: msys2 {0}
-
 jobs:
   build:
     runs-on: windows-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { icon: '⬛', sys: mingw32 }
+          - { icon: '🟦', sys: mingw64 }
+          - { icon: '🟨', sys: ucrt64 }
+          - { icon: '🟧', sys: clang64 }
+
+    name: 🚧${{ matrix.icon }} ${{ matrix.sys }}
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
-    - uses: msys2/setup-msys2@v2
+    - name: '🧰 Checkout'
+      uses: actions/checkout@v4
       with:
-        msystem: mingw64
+        fetch-depth: 0
+
+    - name: '${{ matrix.icon }} Setup MSYS2'
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{matrix.sys}}
         update: true
         install: >-
-          curl
           git
-          go
           make
-          cmake
-          mingw-w64-x86_64-toolchain
+          go
+        pacboy: >-
+          toolchain:p
+          cmake:p
+          ninja:p
 
-    - uses: actions/checkout@v4
-
-    - name: 安装 Fyne (Install Fyne)
+    - name: '🚧 Install Fyne'
       run: |
         go install fyne.io/fyne/v2/cmd/fyne@latest
         if [ $? -ne 0 ]; then
@@ -34,13 +50,13 @@ jobs:
           exit 1
         fi
 
-    - name: 设置环境变量 (Set up environment variables)
+    - name: '🚀 Set up environment variables'
       run: |
         export CGO_ENABLED=1
-        export CGO_CFLAGS="-I/usr/local/include -O2 -Wall"
-        export CGO_LDFLAGS="-L/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
+        export CGO_CFLAGS="-I/$MSYSTEM_PREFIX/include -O2 -Wall"
+        export CGO_LDFLAGS="-L/$MSYSTEM_PREFIX/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid"
 
-    - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
+    - name: '📦 Build Capstone and Keystone libraries'
       run: |
         make lib
         if [ $? -ne 0 ]; then
@@ -48,7 +64,7 @@ jobs:
           exit 1
         fi
 
-    - name: 构建项目 (Build project)
+    - name: '🏗️ Build project'
       run: |
         make build
         if [ $? -ne 0 ]; then
@@ -56,14 +72,14 @@ jobs:
           exit 1
         fi
 
-    - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
+    - name: '📁 Compress Release Asset (Windows)'
       run: |
         mkdir release
         cp ./build/*.exe ./release/
-        7z a -tzip asm2hex-windows-${{ github.ref_name }}.zip ./release/*
+        7z a -tzip asm2hex-windows-${{ matrix.sys }}-${{ github.ref_name }}.zip ./release/*
 
-    - name: 上传构建产物 (Upload Build Artifacts)
+    - name: '🚀 Upload Build Artifacts'
       uses: actions/upload-artifact@v3
       with:
-        name: windows-build
+        name: windows-${{ matrix.sys }}-build
         path: ./release/
