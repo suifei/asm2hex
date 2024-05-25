@@ -1,0 +1,51 @@
+name: macOS 构建 (macOS Build)
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: 设置 Go 环境 (Set up Go)
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.22.3
+
+    - name: 安装依赖 (macOS) (Install dependencies (macOS))
+      run: |
+        brew install make
+        brew install git
+        brew install cmake
+
+    - name: 安装 Fyne (Install Fyne)
+      run: go install fyne.io/fyne/v2/cmd/fyne@latest
+
+    - name: 设置环境变量 (Set up environment variables)
+      run: |
+        echo "CGO_ENABLED=1" >> $GITHUB_ENV
+        echo 'CGO_CFLAGS="-I/usr/local/include -O2 -Wall"' >> $GITHUB_ENV
+        echo 'CGO_LDFLAGS="-L/usr/local/lib -lcapstone -lkeystone"' >> $GITHUB_ENV
+
+    - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
+      run: make lib
+
+    - name: 构建项目 (Build project)
+      run: make build
+
+    - name: 压缩发布资源 (macOS) (Compress Release Asset (macOS))
+      run: |
+        mkdir release
+        cp -r ./build/*.app ./release/
+        zip -r asm2hex-macos-${{ github.ref_name }}.zip ./release/*
+
+    - name: 上传构建产物 (Upload Build Artifacts)
+      uses: actions/upload-artifact@v3
+      with:
+        name: macos-build
+        path: ./release/

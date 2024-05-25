@@ -6,81 +6,32 @@ on:
       - main
 
 jobs:
+  windows_build:
+    uses: ./.github/workflows/windows.yml
 
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest]
+  macos_build:
+    uses: ./.github/workflows/macos.yml
 
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: 设置 Go 环境 (Set up Go)
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.22.3
-
-    - name: 安装依赖 (Windows) (Install dependencies (Windows))
-      if: matrix.os == 'windows-latest'
-      run: |
-        choco install make
-        choco install mingw
-        choco install cmake
-        choco install git
-        
-
-    - name: 安装依赖 (macOS) (Install dependencies (macOS))
-      if: matrix.os == 'macos-latest'
-      run: |
-        brew install make
-        brew install git
-        brew install cmake
-
-    - name: 安装 Fyne (Install Fyne)
-      run: go install fyne.io/fyne/v2/cmd/fyne@latest
-
-    - name: 设置环境变量 (Set up environment variables)
-      run: |
-        echo "CGO_ENABLED=1" >> $GITHUB_ENV
-        echo "CGO_CFLAGS=" >> $GITHUB_ENV
-        echo 'CGO_CFLAGS="${{ matrix.os == 'windows-latest' && '-IC:/Program Files/Git/usr/local/include -O2 -Wall' || '-I/usr/local/include -O2 -Wall' }}"' >> $GITHUB_ENV
-        echo 'CGO_LDFLAGS="${{ matrix.os == 'windows-latest' && '-LC:/Program Files/Git/usr/local/lib -static -lcapstone -lkeystone -lole32 -lshell32 -lkernel32 -lversion -luuid' || '-L/usr/local/lib -lcapstone -lkeystone' }}"' >> $GITHUB_ENV
-    
-    - name: 构建 Capstone 和 Keystone 库 (Build Capstone and Keystone libraries)
-      run: make lib
-
-    - name: 构建项目 (Build project)
-      run: make build
-
-    - name: 压缩发布资源 (Windows) (Compress Release Asset (Windows))
-      if: matrix.os == 'windows-latest'
-      run: |
-        mkdir release
-        cp ./build/*.exe ./release/
-        7z a -tzip asm2hex-windows-${{ github.ref_name }}.zip ./release/*
-
-    - name: 压缩发布资源 (macOS) (Compress Release Asset (macOS))
-      if: matrix.os == 'macos-latest'
-      run: |
-        mkdir release
-        cp -r ./build/*.app ./release/
-        zip -r asm2hex-macos-${{ github.ref_name }}.zip ./release/*
-
-  dispatch:
-    needs: build
+  release:
+    needs: [windows_build, macos_build]
     runs-on: ubuntu-latest
+
     steps:
-    - name: 触发获取公共 IP 的工作流程 (Trigger Get Public IP Workflow)
-      uses: actions/github-script@v6
+    - name: 下载 Windows 构建产物 (Download Windows Build Artifacts)
+      uses: actions/download-artifact@v3
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.rest.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: 'ip.yml',
-            ref: 'main'
-          })
+        name: windows-build
+
+    - name: 下载 macOS 构建产物 (Download macOS Build Artifacts)
+      uses: actions/download-artifact@v3
+      with:
+        name: macos-build
+
+    - name: 公共 IP (Public IP)
+      id: ip
+      uses: haythem/public-ip@v1.3
+
+    - name: 显示公网 IP (Print Public IP)
+      run: |
+        echo ${{ steps.ip.outputs.ipv4 }}
+        echo ${{ steps.ip.outputs.ipv6 }}
