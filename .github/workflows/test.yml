@@ -36,11 +36,11 @@ jobs:
         install: >-
           git
           make
-          go
         pacboy: >-
           toolchain:p
           cmake:p
           ninja:p
+          go:p
 
     - name: '🚧 Install Fyne'
       run: |
