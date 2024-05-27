@@ -1,5 +1,3 @@
-//go:build !build_riscv
-
 package keystone
 
 // For Keystone Engine. AUTO-GENERATED FILE, DO NOT EDIT [keystone_const.go]

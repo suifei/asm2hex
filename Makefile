@@ -57,6 +57,7 @@ clean:
 	echo "Cleaned up successfully"
 
 lib:
+	git checkout main
 	@if [ -d "$(INSTALL_PREFIX)/lib" ] && \
 	   [ -f "$(INSTALL_PREFIX)/lib/libcapstone.a" ] && \
 	   [ -f "$(INSTALL_PREFIX)/lib/libkeystone.a" ]; then \
@@ -92,6 +93,7 @@ lib:
 
 
 lib_riscv:
+	git checkout RISCV32
 	@if [ -d "$(INSTALL_PREFIX)/lib" ] && \
 	   [ -f "$(INSTALL_PREFIX)/lib/libcapstone.a" ] && \
 	   [ -f "$(INSTALL_PREFIX)/lib/libkeystone.a" ]; then \
@@ -126,17 +128,19 @@ lib_riscv:
 	fi
 
 build_riscv:
+	git checkout RISCV32
 	@mkdir -p ./build-riscv && \
 	CGO_ENABLED=1 \
 	CGO_CFLAGS="$(CGO_CFLAGS)" \
 	CGO_LDFLAGS="$(CGO_LDFLAGS)" \
-	fyne package --release --target $(TARGET) --icon ./theme/icons/asm2hex.png -tags build_riscv && \
+	fyne package --release --target $(TARGET) --icon ./theme/icons/asm2hex.png  && \
 	rm -rf ./build-riscv/$(if $(filter $(PLATFORM),Windows),*.exe,*.app) && \
 	mv -fv $(if $(filter $(PLATFORM),Windows),*.exe,*.app) ./build-riscv && \
 	echo "Build completed for $(PLATFORM)"
 
 
 build:
+	git checkout main
 	@mkdir -p ./build && \
 	CGO_ENABLED=1 \
 	CGO_CFLAGS="$(CGO_CFLAGS)" \

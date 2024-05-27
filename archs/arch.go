@@ -1,4 +1,3 @@
-//go:build !build_riscv
 
 package archs
 

@@ -1,5 +1,3 @@
-//go:build build_riscv
-
 package keystone
 
 const (
