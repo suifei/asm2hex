@@ -40,12 +40,13 @@ ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十
 | MOS65XX    | MOS65XX    | ✗              | ✓               |
 | WASM       | WASM       | ✗              | ✓               |
 | BPF        | BPF        | ✗              | ✓               |
-| RISCV      | RISCV      | ✗              | ✓               |
+| RISCV      | RISCV      | ✓              | ✓               |
 | SH         | SH         | ✗              | ✓               |
 | TriCore    | TRICORE    | ✗              | ✓               |
 
 ✓ 表示支持该指令集,✗ 表示不支持该指令集。
 
+- [Keystone 的 RISCV 架构支持](https://github.com/null-cell/keystone)
 
 ## v1.2.0 版本更新说明
 
