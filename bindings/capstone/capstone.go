@@ -14,13 +14,13 @@ const (
 	API_MINOR = 0
 )
 
-type Architecture uint64
-type Mode uint64
-type OptionType uint64
-type OptionValue uint64
-type OperandType uint64
-type AccessType uint64
-type GroupType uint64
+type Architecture uint
+type Mode uint
+type OptionType uint
+type OptionValue uint
+type OperandType uint
+type AccessType uint
+type GroupType uint
 
 const (
 	ARCH_ARM        Architecture = C.CS_ARCH_ARM
@@ -177,8 +177,8 @@ func New(arch Architecture, mode Mode) (*Engine, error) {
 	return &Engine{handle}, nil
 }
 
-func (e *Engine) Option(opt_type OptionType, value OptionValue) error {
-	if cserr := C.cs_option(e.handle, C.cs_opt_type(opt_type), C.ulong(value)); cserr != C.CS_ERR_OK {
+func (e *Engine) Option(opt_type OptionType, value C.size_t) error {
+	if cserr := C.cs_option(e.handle, C.cs_opt_type(opt_type), value); cserr != C.CS_ERR_OK {
 		return CsError(cserr)
 	}
 	return nil
@@ -228,7 +228,7 @@ func (e *Engine) Close() error {
 
 // conforms to usercorn/models.Ins interface
 type Ins struct {
-	address      uint64
+	address   uint64
 	dataSlice []byte
 	mnemonic  string
 	opstr     string
