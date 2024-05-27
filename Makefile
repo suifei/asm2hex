@@ -51,9 +51,7 @@ clean:
 	rm -rf $(INSTALL_PREFIX)/include/keystone && \
 	rm -f $(INSTALL_PREFIX)/lib/libcapstone* && \
 	rm -f $(INSTALL_PREFIX)/lib/libkeystone* && \
-	echo "Cleaned up temporary files" && \
-	echo "Removed Capstone and Keystone libraries" && \
-	echo "Removed build files" && \
+	go clean -cache && \
 	echo "Cleaned up successfully"
 
 lib:

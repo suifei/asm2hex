@@ -18,6 +18,65 @@
 
 ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十六进制机器码相互转换的图形化工具。它支持ARM64、ARM和Thumb三种指令集。
 
+## 支持的汇编指令集
+
+下表列出了当前版本支持的汇编指令集以及对应的汇编器(Keystone)和反汇编器(Capstone)的支持情况:
+
+| 指令集     | 架构       | 汇编(Keystone) | 反汇编(Capstone) |
+|------------|------------|----------------|-----------------|
+| ARM        | ARM        | ✓              | ✓               |
+| ARM64      | ARM64      | ✓              | ✓               |
+| MIPS       | MIPS       | ✓              | ✓               |
+| X86        | X86        | ✓              | ✓               |
+| PPC        | PPC        | ✓              | ✓               |
+| SPARC      | SPARC      | ✓              | ✓               |
+| SystemZ    | SYSTEMZ    | ✓              | ✓               |
+| Hexagon    | HEXAGON    | ✓              | ✗               |
+| EVM        | EVM        | ✓              | ✓               |
+| XCORE      | XCORE      | ✗              | ✓               |
+| M68K       | M68K       | ✗              | ✓               |
+| TMS320C64X | TMS320C64X | ✗              | ✓               |
+| M680X      | M680X      | ✗              | ✓               |
+| MOS65XX    | MOS65XX    | ✗              | ✓               |
+| WASM       | WASM       | ✗              | ✓               |
+| BPF        | BPF        | ✗              | ✓               |
+| RISCV      | RISCV      | ✗              | ✓               |
+| SH         | SH         | ✗              | ✓               |
+| TriCore    | TRICORE    | ✗              | ✓               |
+
+✓ 表示支持该指令集,✗ 表示不支持该指令集。
+
+
+## v1.2.0 版本更新说明
+
+### 新增功能
+
+- 增加了对多种指令集，架构汇编、反汇编的支持,现在可以在主界面上选择。
+- 支持多种汇编指令集,包括 ARM、ARM64、MIPS、X86、PPC、SPARC、SystemZ、Hexagon 和 EVM。
+- 提供了统一的接口,可以方便地进行汇编和反汇编操作。
+
+
+![](screenshots/v1.2-01.png)
+
+![](screenshots/v1.2-02.png)
+
+
+### 改进
+
+- 优化了代码结构,提高了代码的可读性和可维护性。
+- 改进了错误处理机制,提供更友好的错误提示信息。
+- 发布了 github actions 自动化构建流程,保证了代码质量和稳定性。
+
+### 修复
+
+- 修复了一些潜在的 bug 和稳定性问题。
+
+### 其他
+
+- 更新了文档和示例代码,方便用户快速上手使用。
+
+希望这次更新能够为用户带来更好的使用体验,如果您在使用过程中遇到任何问题或有任何建议,欢迎向我们反馈。
+
 [**Full Changelog**](https://github.com/suifei/asm2hex/compare/v1.1...main)
 
 ## 功能特点
