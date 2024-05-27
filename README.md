@@ -47,6 +47,7 @@ ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十
 ✓ 表示支持该指令集,✗ 表示不支持该指令集。
 
 - [Keystone 的 RISCV 架构支持](https://github.com/null-cell/keystone)
+  - 目前还有问题，不知道是不是调用时存在的问题还是这个库还不完善，通过对比 [Compiler Explorer](https://gcc.godbolt.org/)发现汇编的指令完全不一致，还需检查问题原因。
 
 ## v1.2.0 版本更新说明
 
