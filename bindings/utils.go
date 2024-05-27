@@ -1,4 +1,5 @@
-//go:build !build_riscv
+//go:build !EXT_BUILD
+// +build !EXT_BUILD
 
 package archs
 
