@@ -29,7 +29,6 @@ import (
 const (
 	ApplicationTitle       = "ASM to HEX Converter"
 	ApplicationTitleToggle = "HEX to ASM Converter"
-	ApplicationVersion     = "1.2.0"
 )
 
 type ToggleMode string
@@ -238,8 +237,8 @@ func updateSelectParam() {
 	// 	}
 	// }
 
-	fmt.Println("Keystone", toJson(KSSelectParam))
-	fmt.Println("Capstone", toJson(CSSelectParam))
+	// fmt.Println("Keystone", toJson(KSSelectParam))
+	// fmt.Println("Capstone", toJson(CSSelectParam))
 
 	if toggle_mode == ASM2HEX {
 		output1_info.Text = KSSelectParam.Info
@@ -259,8 +258,8 @@ func createDropdowns() *fyne.Container {
 	keystoneArchDropdown.ExtendBaseWidget(keystoneArchDropdown)
 	keystoneArchDropdown.SetOptions(getOptionNames(keystoneArchOptions))
 	keystoneArchDropdown.OnChanged = func(s string) {
-		fmt.Println("Keystone Arch:", s)
-		fmt.Println(keystoneArchDropdown.SelectedIndex())
+		// fmt.Println("Keystone Arch:", s)
+		// fmt.Println(keystoneArchDropdown.SelectedIndex())
 		mapKey := keystoneArchOptions[keystoneArchDropdown.SelectedIndex()].Const
 		if options, ok := keystoneModeOptions[mapKey]; ok && keystoneModeDropdown != nil {
 			_keystoneModeOptions = options
@@ -278,7 +277,7 @@ func createDropdowns() *fyne.Container {
 	keystoneModeDropdown = &widget.Select{}
 	keystoneModeDropdown.ExtendBaseWidget(keystoneModeDropdown)
 	keystoneModeDropdown.OnChanged = func(s string) {
-		fmt.Println("Keystone Mode:", s)
+		// fmt.Println("Keystone Mode:", s)
 		updateSelectParam()
 	}
 
@@ -293,8 +292,8 @@ func createDropdowns() *fyne.Container {
 	capstoneArchDropdown.ExtendBaseWidget(capstoneArchDropdown)
 	capstoneArchDropdown.SetOptions(getOptionNames(capstoneArchOptions))
 	capstoneArchDropdown.OnChanged = func(s string) {
-		fmt.Println("Capstone Arch:", s)
-		fmt.Println(capstoneArchDropdown.SelectedIndex())
+		// fmt.Println("Capstone Arch:", s)
+		// fmt.Println(capstoneArchDropdown.SelectedIndex())
 		mapKey := capstoneArchOptions[capstoneArchDropdown.SelectedIndex()].Const
 		if options, ok := capstoneModeOptions[mapKey]; ok && capstoneModeDropdown != nil {
 			_capstoneModeOptions = options
@@ -311,7 +310,7 @@ func createDropdowns() *fyne.Container {
 	capstoneModeDropdown = &widget.Select{}
 	capstoneModeDropdown.ExtendBaseWidget(capstoneModeDropdown)
 	capstoneModeDropdown.OnChanged = func(s string) {
-		fmt.Println("Capstone Mode:", s)
+		// fmt.Println("Capstone Mode:", s)
 		updateSelectParam()
 	}
 
@@ -353,9 +352,29 @@ func main() {
 	myWindow.SetContent(createMainUI(myWindow))
 
 	myWindow.Resize(fyne.NewSize(800, 600))
+
+	go downloadWebResource()
+
 	myWindow.ShowAndRun()
 }
-
+func downloadWebResource() {
+	if icons.CAPSTONE_PNG_RES == nil || icons.KEYSTONE_PNG_RES == nil {
+		go func() {
+			cs, err := fyne.LoadResourceFromURLString("https://www.capstone-engine.org/img/capstone.png")
+			if err != nil {
+				fmt.Println(err)
+			}
+			icons.CAPSTONE_PNG_RES = cs
+		}()
+		go func() {
+			ks, err := fyne.LoadResourceFromURLString("https://www.keystone-engine.org/images/keystone.png")
+			if err != nil {
+				fmt.Println(err)
+			}
+			icons.KEYSTONE_PNG_RES = ks
+		}()
+	}
+}
 func hexdump(buf []byte) string {
 	if len(buf) == 0 {
 		return ""
@@ -466,7 +485,7 @@ cbnz r0, #0x682c4
 	app_title.TextSize = 24
 
 	about_messages := "ASM to HEX Converter\n\n" +
-		"Version: v" + ApplicationVersion + "\n" +
+		"Version: " + fyne.CurrentApp().Metadata().Version + "\n" +
 		"Author: suifei suifei@gmail.com\n" +
 		"License: MIT\n" +
 		"Source code: https://github.com/suifei/asm2hex\n\n" +
@@ -480,15 +499,15 @@ cbnz r0, #0x682c4
 		uri, _ := url.Parse("https://github.com/suifei")
 		fyne.CurrentApp().OpenURL(uri)
 	})
-	openFyne := widget.NewButtonWithIcon("Fyne", theme.FyneLogo(), func() {
+	openFyne := widget.NewButtonWithIcon(fmt.Sprintf("Fyne %s","v2.4.5"), theme.FyneLogo(), func() {
 		uri, _ := url.Parse("https://fyne.io/")
 		fyne.CurrentApp().OpenURL(uri)
-	})
-	openCapstone := widget.NewButtonWithIcon("Capstone", icons.CAPSTONE_PNG_RES, func() {
+	}) 
+	openCapstone := widget.NewButtonWithIcon(fmt.Sprintf("Capstone v%d.%d",capstone.API_MAJOR, capstone.API_MINOR), icons.CAPSTONE_PNG_RES, func() {
 		uri, _ := url.Parse("https://www.capstone-engine.org/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
-	openKeystone := widget.NewButtonWithIcon("Keystone", icons.KEYSTONE_PNG_RES, func() {
+	openKeystone := widget.NewButtonWithIcon(fmt.Sprintf("Keystone v%d.%d",keystone.API_MAJOR, keystone.API_MINOR), icons.KEYSTONE_PNG_RES, func() {
 		uri, _ := url.Parse("https://www.keystone-engine.org/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
@@ -538,27 +557,14 @@ cbnz r0, #0x682c4
 	})
 	clearBtn.Importance = widget.DangerImportance
 	aboutBtn := widget.NewButtonWithIcon("About...", theme.QuestionIcon(), func() {
-		if icons.CAPSTONE_PNG_RES == nil || icons.KEYSTONE_PNG_RES == nil {
-			go func() {
-				cs, err := fyne.LoadResourceFromURLString("https://www.capstone-engine.org/img/capstone.png")
-				if err != nil {
-					fmt.Println(err)
-				}
-				icons.CAPSTONE_PNG_RES = cs
-				openCapstone.Icon = icons.CAPSTONE_PNG_RES
-				openCapstone.Refresh()
-			}()
-			go func() {
-				ks, err := fyne.LoadResourceFromURLString("https://www.keystone-engine.org/images/keystone.png")
-				if err != nil {
-					fmt.Println(err)
-				}
-				icons.KEYSTONE_PNG_RES = ks
-				openKeystone.Icon = icons.KEYSTONE_PNG_RES
-				openKeystone.Refresh()
-			}()
+		if icons.CAPSTONE_PNG_RES != nil {
+			openCapstone.Icon = icons.CAPSTONE_PNG_RES
+			openCapstone.Refresh()
 		}
-
+		if icons.KEYSTONE_PNG_RES != nil {
+			openKeystone.Icon = icons.KEYSTONE_PNG_RES
+			openKeystone.Refresh()
+		}
 		status.SetText("About")
 		status.Refresh()
 		aboutDlg.Resize(fyne.NewSize(400, 300))
@@ -715,7 +721,7 @@ func doConversion(status *widget.Label,
 			status.Refresh()
 			return
 		}
-		fmt.Println("hex:", hexdump(encoding))
+		// fmt.Println("hex:", hexdump(encoding))
 		result, _, ok, err := archs.Disassemble(
 			capstone.Architecture(CSSelectParam.Arch),
 			capstone.Mode(CSSelectParam.Mode),
@@ -743,31 +749,3 @@ func doConversion(status *widget.Label,
 	status.Refresh()
 	_output.Refresh()
 }
-
-// func process(ok bool, output *widget.Entry, encoding []byte, status *widget.Label, pc *uint64, pcSize uint64, err error) {
-// 	if ok {
-// 		if toggle_mode == HEX2ASM {
-// 			output.Append(fmt.Sprintf("%s\n", encoding))
-// 		} else {
-// 			output.Append(hexdump(encoding) + "\n")
-
-// 			status.SetText("Done")
-// 			status.Refresh()
-// 		}
-// 		output.Refresh()
-// 		*pc += pcSize
-
-// 	} else {
-// 		errMsg := err.Error()
-// 		if strings.Contains(errMsg, "(KS") {
-// 			errMsg = strings.Split(errMsg, "(KS")[0]
-// 		}
-
-// 		output.Append(errMsg + "\n")
-// 		output.Refresh()
-
-// 		status.SetText("Error:" + errMsg)
-// 		status.Refresh()
-// 	}
-
-// }

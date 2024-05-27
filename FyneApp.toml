@@ -4,5 +4,5 @@ Website = "https://github.com/suifei/asm2hex"
   Icon = "./theme/icons/asm2hex.png"
   Name = "ASM to HEX Converter"
   ID = "suifei.asm2hex.app"
-  Version = "1.1.0"
-  Build = 55
+  Version = "1.2.0"
+  Build = 58
