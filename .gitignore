@@ -16,6 +16,8 @@ link/
 tmp/
 
 build/
+build-riscv/
+fyne_metadata_init.go
 
 asm2hex
 ASM to HEX Converter.app

@@ -1,4 +1,4 @@
-//go:build !build_riscv
+//go:build build_riscv
 
 package archs
 
@@ -166,6 +166,13 @@ func getKeystoneInstructionLength(arch keystone.Architecture, mode keystone.Mode
 			return 4
 		}
 		return 4
+	case keystone.ARCH_RISCV:
+		if mode&keystone.MODE_RISCV32 != 0 {
+			return 2
+		}
+		if mode&keystone.MODE_RISCV64 != 0 {
+			return 4
+		}
 	case keystone.ARCH_SYSTEMZ:
 		return 2
 	case keystone.ARCH_HEXAGON:

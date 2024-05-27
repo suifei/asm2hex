@@ -44,113 +44,6 @@ var prefix_hex bool = false
 var offset uint64 = 0
 var bigEndian bool = false
 var addAddress bool = false
-
-type Option struct {
-	Const uint64
-	Name  string
-}
-
-type OptionSlice []Option
-
-var keystoneArchOptions = OptionSlice{
-	{uint64(keystone.ARCH_ARM), "ARM"},
-	{uint64(keystone.ARCH_ARM64), "ARM64"},
-	{uint64(keystone.ARCH_MIPS), "MIPS"},
-	{uint64(keystone.ARCH_X86), "X86"},
-	{uint64(keystone.ARCH_PPC), "PPC"},
-	{uint64(keystone.ARCH_SPARC), "SPARC"},
-	{uint64(keystone.ARCH_SYSTEMZ), "SYSTEMZ"},
-	{uint64(keystone.ARCH_HEXAGON), "HEXAGON"},
-}
-
-var _keystoneModeOptions = OptionSlice{}
-var keystoneModeOptions = map[uint64]OptionSlice{
-	uint64(keystone.ARCH_ARM):     {{uint64(keystone.MODE_ARM), "ARM"}, {uint64(keystone.MODE_THUMB), "THUMB"}, {uint64(keystone.MODE_V8), "V8"}},
-	uint64(keystone.ARCH_ARM64):   {{uint64(keystone.MODE_LITTLE_ENDIAN), "LITTLE_ENDIAN"}},
-	uint64(keystone.ARCH_MIPS):    {{uint64(keystone.MODE_MICRO), "MICRO"}, {uint64(keystone.MODE_MIPS3), "MIPS3"}, {uint64(keystone.MODE_MIPS32R6), "MIPS32R6"}, {uint64(keystone.MODE_MIPS32), "MIPS32"}, {uint64(keystone.MODE_MIPS64), "MIPS64"}},
-	uint64(keystone.ARCH_X86):     {{uint64(keystone.MODE_16), "16"}, {uint64(keystone.MODE_32), "32"}, {uint64(keystone.MODE_64), "64"}},
-	uint64(keystone.ARCH_PPC):     {{uint64(keystone.MODE_PPC32), "PPC32"}, {uint64(keystone.MODE_PPC64), "PPC64"}, {uint64(keystone.MODE_QPX), "QPX"}},
-	uint64(keystone.ARCH_SPARC):   {{uint64(keystone.MODE_SPARC32), "SPARC32"}, {uint64(keystone.MODE_SPARC64), "SPARC64"}, {uint64(keystone.MODE_V9), "V9"}},
-	uint64(keystone.ARCH_SYSTEMZ): {{uint64(keystone.MODE_BIG_ENDIAN), "BIG_ENDIAN"}},
-	uint64(keystone.ARCH_HEXAGON): {{uint64(keystone.MODE_BIG_ENDIAN), "BIG_ENDIAN"}},
-}
-
-// var _keystoneSyntaxOptions = OptionSlice{}
-// var keystoneSyntaxOptions = map[uint64]OptionSlice{
-// 	uint64(keystone.ARCH_ARM):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_ARM64):   {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_MIPS):    {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_X86):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}, {uint64(keystone.OPT_SYNTAX_NASM), "NASM"}, {uint64(keystone.OPT_SYNTAX_MASM), "MASM"}, {uint64(keystone.OPT_SYNTAX_GAS), "GAS"}, {uint64(keystone.OPT_SYNTAX_RADIX16), "Radix16"}},
-// 	uint64(keystone.ARCH_PPC):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_SPARC):   {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_SYSTEMZ): {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_HEXAGON): {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}},
-// }
-
-var capstoneArchOptions = OptionSlice{
-	{uint64(capstone.ARCH_ARM), "ARM"},
-	{uint64(capstone.ARCH_ARM64), "ARM64"},
-	{uint64(capstone.ARCH_MIPS), "MIPS"},
-	{uint64(capstone.ARCH_X86), "X86"},
-	{uint64(capstone.ARCH_PPC), "PPC"},
-	{uint64(capstone.ARCH_SPARC), "SPARC"},
-	{uint64(capstone.ARCH_SYSZ), "SYSZ"},
-	{uint64(capstone.ARCH_XCORE), "XCORE"},
-	{uint64(capstone.ARCH_M68K), "M68K"},
-	{uint64(capstone.ARCH_TMS320C64X), "TMS320C64X"},
-	{uint64(capstone.ARCH_M680X), "M680X"},
-	{uint64(capstone.ARCH_EVM), "EVM"},
-	{uint64(capstone.ARCH_MOS65XX), "MOS65XX"},
-	{uint64(capstone.ARCH_WASM), "WASM"},
-	{uint64(capstone.ARCH_BPF), "BPF"},
-	{uint64(capstone.ARCH_RISCV), "RISCV"},
-	{uint64(capstone.ARCH_SH), "SH"},
-	{uint64(capstone.ARCH_TRICORE), "TRICORE"},
-}
-
-var _capstoneModeOptions = OptionSlice{}
-var capstoneModeOptions = map[uint64]OptionSlice{
-	uint64(capstone.ARCH_ARM):     {{uint64(capstone.MODE_ARM), "ARM"}, {uint64(capstone.MODE_THUMB), "THUMB"}, {uint64(capstone.MODE_MCLASS), "MCLASS"}, {uint64(capstone.MODE_V8), "V8"}},
-	uint64(capstone.ARCH_ARM64):   {{uint64(capstone.MODE_LITTLE_ENDIAN), "LITTLE_ENDIAN"}},
-	uint64(capstone.ARCH_MIPS):    {{uint64(capstone.MODE_MIPS32), "MIPS32"}, {uint64(capstone.MODE_MIPS64), "MIPS64"}, {uint64(capstone.MODE_MICRO), "MICRO"}, {uint64(capstone.MODE_MIPS3), "MIPS3"}, {uint64(capstone.MODE_MIPS32R6), "MIPS32R6"}, {uint64(capstone.MODE_MIPS2), "MIPS2"}},
-	uint64(capstone.ARCH_X86):     {{uint64(capstone.MODE_16), "16"}, {uint64(capstone.MODE_32), "32"}, {uint64(capstone.MODE_64), "64"}},
-	uint64(capstone.ARCH_PPC):     {{uint64(capstone.MODE_LITTLE_ENDIAN), "LITTLE_ENDIAN"}, {uint64(capstone.MODE_QPX), "QPX"}, {uint64(capstone.MODE_SPE), "SPE"}, {uint64(capstone.MODE_BOOKE), "BOOKE"}},
-	uint64(capstone.ARCH_SPARC):   {{uint64(capstone.MODE_V9), "V9"}},
-	uint64(capstone.ARCH_SYSZ):    {{uint64(capstone.MODE_BIG_ENDIAN), "BIG_ENDIAN"}},
-	uint64(capstone.ARCH_XCORE):   {{uint64(capstone.MODE_LITTLE_ENDIAN), "LITTLE_ENDIAN"}},
-	uint64(capstone.ARCH_M68K):    {{uint64(capstone.MODE_M68K_000), "M68K_000"}, {uint64(capstone.MODE_M68K_010), "M68K_010"}, {uint64(capstone.MODE_M68K_020), "M68K_020"}, {uint64(capstone.MODE_M68K_030), "M68K_030"}, {uint64(capstone.MODE_M68K_040), "M68K_040"}, {uint64(capstone.MODE_M68K_060), "M68K_060"}},
-	uint64(capstone.ARCH_M680X):   {{uint64(capstone.MODE_M680X_6301), "M680X_6301"}, {uint64(capstone.MODE_M680X_6309), "M680X_6309"}, {uint64(capstone.MODE_M680X_6800), "M680X_6800"}, {uint64(capstone.MODE_M680X_6801), "M680X_6801"}, {uint64(capstone.MODE_M680X_6805), "M680X_6805"}, {uint64(capstone.MODE_M680X_6808), "M680X_6808"}, {uint64(capstone.MODE_M680X_6809), "M680X_6809"}, {uint64(capstone.MODE_M680X_6811), "M680X_6811"}, {uint64(capstone.MODE_M680X_CPU12), "M680X_CPU12"}, {uint64(capstone.MODE_M680X_HCS08), "M680X_HCS08"}},
-	uint64(capstone.ARCH_EVM):     {{uint64(capstone.MODE_BIG_ENDIAN), "BIG_ENDIAN"}},
-	uint64(capstone.ARCH_MOS65XX): {{uint64(capstone.MODE_MOS65XX_6502), "MOS65XX_6502"}, {uint64(capstone.MODE_MOS65XX_65C02), "MOS65XX_65C02"}, {uint64(capstone.MODE_MOS65XX_W65C02), "MOS65XX_W65C02"}, {uint64(capstone.MODE_MOS65XX_65816), "MOS65XX_65816"}, {uint64(capstone.MODE_MOS65XX_65816_LONG_M), "MOS65XX_65816_LONG_M"}, {uint64(capstone.MODE_MOS65XX_65816_LONG_X), "MOS65XX_65816_LONG_X"}, {uint64(capstone.MODE_MOS65XX_65816_LONG_MX), "MOS65XX_65816_LONG_MX"}},
-	uint64(capstone.ARCH_WASM):    {{uint64(capstone.MODE_LITTLE_ENDIAN), "LITTLE_ENDIAN"}},
-	uint64(capstone.ARCH_BPF):     {{uint64(capstone.MODE_BPF_CLASSIC), "BPF_CLASSIC"}, {uint64(capstone.MODE_BPF_EXTENDED), "BPF_EXTENDED"}},
-	uint64(capstone.ARCH_RISCV):   {{uint64(capstone.MODE_RISCV32), "RISCV32"}, {uint64(capstone.MODE_RISCV64), "RISCV64"}, {uint64(capstone.MODE_RISCVC), "RISCVC"}},
-	uint64(capstone.ARCH_SH):      {{uint64(capstone.MODE_SH2), "SH2"}, {uint64(capstone.MODE_SH2A), "SH2A"}, {uint64(capstone.MODE_SH3), "SH3"}, {uint64(capstone.MODE_SH4), "SH4"}, {uint64(capstone.MODE_SH4A), "SH4A"}, {uint64(capstone.MODE_SHFPU), "SHFPU"}, {uint64(capstone.MODE_SHDSP), "SHDSP"}},
-	uint64(capstone.ARCH_TRICORE): {{uint64(capstone.MODE_TRICORE_110), "TRICORE_110"}, {uint64(capstone.MODE_TRICORE_120), "TRICORE_120"}, {uint64(capstone.MODE_TRICORE_130), "TRICORE_130"}, {uint64(capstone.MODE_TRICORE_131), "TRICORE_131"}, {uint64(capstone.MODE_TRICORE_160), "TRICORE_160"}, {uint64(capstone.MODE_TRICORE_161), "TRICORE_161"}, {uint64(capstone.MODE_TRICORE_162), "TRICORE_162"}},
-}
-
-// var _capstoneSyntaxOptions = OptionSlice{}
-// var capstoneSyntaxOptions = map[uint64]OptionSlice{
-// 	uint64(capstone.ARCH_ARM):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_ARM64):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_MIPS):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_X86):        {{uint64(capstone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(capstone.OPT_SYNTAX_ATT), "ATT"}, {uint64(capstone.OPT_SYNTAX_MASM), "MASM"}},
-// 	uint64(capstone.ARCH_PPC):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_SPARC):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_SYSZ):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_XCORE):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_M68K):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
-// 	uint64(capstone.ARCH_TMS320C64X): {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_M680X):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
-// 	uint64(capstone.ARCH_EVM):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_MOS65XX):    {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
-// 	uint64(capstone.ARCH_WASM):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_BPF):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_RISCV):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_SH):         {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_TRICORE):    {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// }
-
 type Param struct {
 	Arch uint64
 	Mode uint64
@@ -186,7 +79,7 @@ var asm2hexTools *fyne.Container
 var hex2asmTools *fyne.Container
 var output1_info *widget.Label
 
-func getOptionNames(options OptionSlice) []string {
+func getOptionNames(options archs.OptionSlice) []string {
 	names := make([]string, len(options))
 	for i, option := range options {
 		names[i] = option.Name
@@ -199,40 +92,40 @@ func toJson(o interface{}) string {
 }
 func updateSelectParam() {
 	if keystoneArchDropdown != nil && keystoneArchDropdown.SelectedIndex() != -1 {
-		mapKey := keystoneArchOptions[keystoneArchDropdown.SelectedIndex()].Const
+		mapKey := archs.KeystoneArchOptions[keystoneArchDropdown.SelectedIndex()].Const
 		KSSelectParam.Arch = mapKey
 		KSSelectParam.Info = keystoneArchDropdown.Selected
 	}
 	if capstoneArchDropdown != nil && capstoneArchDropdown.SelectedIndex() != -1 {
-		mapKey := capstoneArchOptions[capstoneArchDropdown.SelectedIndex()].Const
+		mapKey := archs.CapstoneArchOptions[capstoneArchDropdown.SelectedIndex()].Const
 		CSSelectParam.Arch = mapKey
 		CSSelectParam.Info = capstoneArchDropdown.Selected
 	}
-	if keystoneModeDropdown != nil && _keystoneModeOptions != nil {
+	if keystoneModeDropdown != nil && archs.KeystoneModeList != nil {
 		index := keystoneModeDropdown.SelectedIndex()
-		if index >= 0 && index < len(_keystoneModeOptions) {
-			KSSelectParam.Mode = _keystoneModeOptions[index].Const
+		if index >= 0 && index < len(archs.KeystoneModeList) {
+			KSSelectParam.Mode = archs.KeystoneModeList[index].Const
 			KSSelectParam.Info += " " + keystoneModeDropdown.Selected
 		}
 	}
-	if capstoneModeDropdown != nil && _capstoneModeOptions != nil {
+	if capstoneModeDropdown != nil && archs.CapstoneModeList != nil {
 		index := capstoneModeDropdown.SelectedIndex()
-		if index >= 0 && index < len(_capstoneModeOptions) {
-			CSSelectParam.Mode = _capstoneModeOptions[index].Const
+		if index >= 0 && index < len(archs.CapstoneModeList) {
+			CSSelectParam.Mode = archs.CapstoneModeList[index].Const
 			CSSelectParam.Info += " " + capstoneModeDropdown.Selected
 		}
 	}
-	// if keystoneSyntaxDropdown != nil && _keystoneSyntaxOptions != nil {
+	// if keystoneSyntaxDropdown != nil && archs.KeystoneSyntaxList != nil {
 	// 	index := keystoneSyntaxDropdown.SelectedIndex()
-	// 	if index >= 0 && index < len(_keystoneSyntaxOptions) {
-	// 		KSSelectParam.Syntax = _keystoneSyntaxOptions[index].Const
+	// 	if index >= 0 && index < len(archs.KeystoneSyntaxList) {
+	// 		KSSelectParam.Syntax = archs.KeystoneSyntaxList[index].Const
 	// 		KSSelectParam.Info += " " + keystoneSyntaxDropdown.Selected
 	// 	}
 	// }
-	// if capstoneSyntaxDropdown != nil && _capstoneSyntaxOptions != nil {
+	// if capstoneSyntaxDropdown != nil && archs.CapstoneSyntaxList != nil {
 	// 	index := capstoneSyntaxDropdown.SelectedIndex()
-	// 	if index >= 0 && index < len(_capstoneSyntaxOptions) {
-	// 		CSSelectParam.Syntax = _capstoneSyntaxOptions[index].Const
+	// 	if index >= 0 && index < len(archs.CapstoneSyntaxList) {
+	// 		CSSelectParam.Syntax = archs.CapstoneSyntaxList[index].Const
 	// 		CSSelectParam.Info += " " + capstoneSyntaxDropdown.Selected
 	// 	}
 	// }
@@ -256,18 +149,18 @@ func updateSelectParam() {
 func createDropdowns() *fyne.Container {
 	keystoneArchDropdown = &widget.Select{}
 	keystoneArchDropdown.ExtendBaseWidget(keystoneArchDropdown)
-	keystoneArchDropdown.SetOptions(getOptionNames(keystoneArchOptions))
+	keystoneArchDropdown.SetOptions(getOptionNames(archs.KeystoneArchOptions))
 	keystoneArchDropdown.OnChanged = func(s string) {
 		// fmt.Println("Keystone Arch:", s)
 		// fmt.Println(keystoneArchDropdown.SelectedIndex())
-		mapKey := keystoneArchOptions[keystoneArchDropdown.SelectedIndex()].Const
-		if options, ok := keystoneModeOptions[mapKey]; ok && keystoneModeDropdown != nil {
-			_keystoneModeOptions = options
+		mapKey := archs.KeystoneArchOptions[keystoneArchDropdown.SelectedIndex()].Const
+		if options, ok := archs.KeystoneModeOptions[mapKey]; ok && keystoneModeDropdown != nil {
+			archs.KeystoneModeList = options
 			keystoneModeDropdown.SetOptions(getOptionNames(options))
 			keystoneModeDropdown.SetSelectedIndex(0)
 		}
-		// if options, ok := keystoneSyntaxOptions[mapKey]; ok && keystoneSyntaxDropdown != nil {
-		// 	_keystoneSyntaxOptions = options
+		// if options, ok := KeystoneSyntaxOptions[mapKey]; ok && keystoneSyntaxDropdown != nil {
+		// 	KeystoneSyntaxList = options
 		// 	keystoneSyntaxDropdown.SetOptions(getOptionNames(options))
 		// 	keystoneSyntaxDropdown.SetSelectedIndex(0)
 		// }
@@ -290,18 +183,18 @@ func createDropdowns() *fyne.Container {
 
 	capstoneArchDropdown = &widget.Select{}
 	capstoneArchDropdown.ExtendBaseWidget(capstoneArchDropdown)
-	capstoneArchDropdown.SetOptions(getOptionNames(capstoneArchOptions))
+	capstoneArchDropdown.SetOptions(getOptionNames(archs.CapstoneArchOptions))
 	capstoneArchDropdown.OnChanged = func(s string) {
 		// fmt.Println("Capstone Arch:", s)
 		// fmt.Println(capstoneArchDropdown.SelectedIndex())
-		mapKey := capstoneArchOptions[capstoneArchDropdown.SelectedIndex()].Const
-		if options, ok := capstoneModeOptions[mapKey]; ok && capstoneModeDropdown != nil {
-			_capstoneModeOptions = options
+		mapKey := archs.CapstoneArchOptions[capstoneArchDropdown.SelectedIndex()].Const
+		if options, ok := archs.CapstoneModeOptions[mapKey]; ok && capstoneModeDropdown != nil {
+			archs.CapstoneModeList = options
 			capstoneModeDropdown.SetOptions(getOptionNames(options))
 			capstoneModeDropdown.SetSelectedIndex(0)
 		}
-		// if options, ok := capstoneSyntaxOptions[mapKey]; ok && capstoneSyntaxDropdown != nil {
-		// 	_capstoneSyntaxOptions = options
+		// if options, ok := CapstoneSyntaxOptions[mapKey]; ok && capstoneSyntaxDropdown != nil {
+		// 	CapstoneSyntaxList = options
 		// 	capstoneSyntaxDropdown.SetOptions(getOptionNames(options))
 		// 	capstoneSyntaxDropdown.SetSelectedIndex(0)
 		// }
@@ -484,8 +377,12 @@ cbnz r0, #0x682c4
 	app_title := canvas.NewText(ApplicationTitle, color.NRGBA{0, 0x80, 0, 0xff})
 	app_title.TextSize = 24
 
+	app_ver := fyne.CurrentApp().Metadata().Version
+	if archs.WithRiscv {
+		app_ver += " (RISC-V)"
+	}
 	about_messages := "ASM to HEX Converter\n\n" +
-		"Version: " + fyne.CurrentApp().Metadata().Version + "\n" +
+		"Version: " + app_ver + "\n" +
 		"Author: suifei suifei@gmail.com\n" +
 		"License: MIT\n" +
 		"Source code: https://github.com/suifei/asm2hex\n\n" +

@@ -1,4 +1,4 @@
-//go:build !build_riscv
+//go:build build_riscv
 
 package archs
 
@@ -10,8 +10,8 @@ import (
 	"github.com/suifei/asm2hex/bindings/keystone"
 )
 
+var WithRiscv = true
 
-var WithRiscv = false
 type Option struct {
 	Const uint64
 	Name  string
@@ -25,6 +25,7 @@ var KeystoneArchOptions = OptionSlice{
 	{uint64(keystone.ARCH_MIPS), "MIPS"},
 	{uint64(keystone.ARCH_X86), "X86"},
 	{uint64(keystone.ARCH_PPC), "PPC"},
+	{uint64(keystone.ARCH_RISCV), "RISCV"},
 	{uint64(keystone.ARCH_SPARC), "SPARC"},
 	{uint64(keystone.ARCH_SYSTEMZ), "SYSTEMZ"},
 	{uint64(keystone.ARCH_HEXAGON), "HEXAGON"},
@@ -36,6 +37,7 @@ var KeystoneModeOptions = map[uint64]OptionSlice{
 	uint64(keystone.ARCH_ARM64):   {{uint64(keystone.MODE_LITTLE_ENDIAN), "LITTLE_ENDIAN"}},
 	uint64(keystone.ARCH_MIPS):    {{uint64(keystone.MODE_MICRO), "MICRO"}, {uint64(keystone.MODE_MIPS3), "MIPS3"}, {uint64(keystone.MODE_MIPS32R6), "MIPS32R6"}, {uint64(keystone.MODE_MIPS32), "MIPS32"}, {uint64(keystone.MODE_MIPS64), "MIPS64"}},
 	uint64(keystone.ARCH_X86):     {{uint64(keystone.MODE_16), "16"}, {uint64(keystone.MODE_32), "32"}, {uint64(keystone.MODE_64), "64"}},
+	uint64(keystone.ARCH_RISCV):   {{uint64(keystone.MODE_RISCV32), "RISCV32"}, {uint64(keystone.MODE_RISCV64), "RISCV64"}},
 	uint64(keystone.ARCH_PPC):     {{uint64(keystone.MODE_PPC32), "PPC32"}, {uint64(keystone.MODE_PPC64), "PPC64"}, {uint64(keystone.MODE_QPX), "QPX"}},
 	uint64(keystone.ARCH_SPARC):   {{uint64(keystone.MODE_SPARC32), "SPARC32"}, {uint64(keystone.MODE_SPARC64), "SPARC64"}, {uint64(keystone.MODE_V9), "V9"}},
 	uint64(keystone.ARCH_SYSTEMZ): {{uint64(keystone.MODE_BIG_ENDIAN), "BIG_ENDIAN"}},
