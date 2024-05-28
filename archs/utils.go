@@ -1,4 +1,3 @@
-
 package archs
 
 import (
@@ -43,7 +42,7 @@ func keystoneToBigEndian(data []byte, arch keystone.Architecture, mode keystone.
 		return nil, fmt.Errorf("input data is empty")
 	}
 
-	instructionLength := getKeystoneInstructionLength(arch, mode)
+	instructionLength := len(data) //getKeystoneInstructionLength(arch, mode)
 	if instructionLength == 0 {
 		return nil, fmt.Errorf("unsupported architecture or mode")
 	}

@@ -17,7 +17,7 @@ const (
 type Architecture uint
 type Mode uint
 type OptionType uint
-type OptionValue uint
+type OptionValue C.size_t
 type OperandType uint
 type AccessType uint
 type GroupType uint
@@ -177,8 +177,8 @@ func New(arch Architecture, mode Mode) (*Engine, error) {
 	return &Engine{handle}, nil
 }
 
-func (e *Engine) Option(opt_type OptionType, value C.size_t) error {
-	if cserr := C.cs_option(e.handle, C.cs_opt_type(opt_type), value); cserr != C.CS_ERR_OK {
+func (e *Engine) Option(opt_type OptionType, value OptionValue) error {
+	if cserr := C.cs_option(e.handle, C.cs_opt_type(opt_type), C.size_t(value)); cserr != C.CS_ERR_OK {
 		return CsError(cserr)
 	}
 	return nil

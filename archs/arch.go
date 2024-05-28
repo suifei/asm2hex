@@ -1,4 +1,3 @@
-
 package archs
 
 import (
@@ -9,8 +8,8 @@ import (
 	"github.com/suifei/asm2hex/bindings/keystone"
 )
 
-
 var WithRiscv = false
+
 type Option struct {
 	Const uint64
 	Name  string
@@ -41,17 +40,17 @@ var KeystoneModeOptions = map[uint64]OptionSlice{
 	uint64(keystone.ARCH_HEXAGON): {{uint64(keystone.MODE_BIG_ENDIAN), "BIG_ENDIAN"}},
 }
 
-// var KeystoneSyntaxList = OptionSlice{}
-// var KeystoneSyntaxOptions = map[uint64]OptionSlice{
-// 	uint64(keystone.ARCH_ARM):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_ARM64):   {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_MIPS):    {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_X86):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}, {uint64(keystone.OPT_SYNTAX_NASM), "NASM"}, {uint64(keystone.OPT_SYNTAX_MASM), "MASM"}, {uint64(keystone.OPT_SYNTAX_GAS), "GAS"}, {uint64(keystone.OPT_SYNTAX_RADIX16), "Radix16"}},
-// 	uint64(keystone.ARCH_PPC):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_SPARC):   {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_SYSTEMZ): {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
-// 	uint64(keystone.ARCH_HEXAGON): {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}},
-// }
+var KeystoneSyntaxList = OptionSlice{}
+var KeystoneSyntaxOptions = map[uint64]OptionSlice{
+	uint64(keystone.ARCH_ARM):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
+	uint64(keystone.ARCH_ARM64):   {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
+	uint64(keystone.ARCH_MIPS):    {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
+	uint64(keystone.ARCH_X86):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}, {uint64(keystone.OPT_SYNTAX_NASM), "NASM"}, {uint64(keystone.OPT_SYNTAX_MASM), "MASM"}, {uint64(keystone.OPT_SYNTAX_GAS), "GAS"}, {uint64(keystone.OPT_SYNTAX_RADIX16), "Radix16"}},
+	uint64(keystone.ARCH_PPC):     {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
+	uint64(keystone.ARCH_SPARC):   {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
+	uint64(keystone.ARCH_SYSTEMZ): {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(keystone.OPT_SYNTAX_ATT), "ATT"}},
+	uint64(keystone.ARCH_HEXAGON): {{uint64(keystone.OPT_SYNTAX_INTEL), "Intel"}},
+}
 
 var CapstoneArchOptions = OptionSlice{
 	{uint64(capstone.ARCH_ARM), "ARM"},
@@ -95,29 +94,29 @@ var CapstoneModeOptions = map[uint64]OptionSlice{
 	uint64(capstone.ARCH_TRICORE): {{uint64(capstone.MODE_TRICORE_110), "TRICORE_110"}, {uint64(capstone.MODE_TRICORE_120), "TRICORE_120"}, {uint64(capstone.MODE_TRICORE_130), "TRICORE_130"}, {uint64(capstone.MODE_TRICORE_131), "TRICORE_131"}, {uint64(capstone.MODE_TRICORE_160), "TRICORE_160"}, {uint64(capstone.MODE_TRICORE_161), "TRICORE_161"}, {uint64(capstone.MODE_TRICORE_162), "TRICORE_162"}},
 }
 
-// var CapstoneSyntaxList = OptionSlice{}
-// var CapstoneSyntaxOptions = map[uint64]OptionSlice{
-// 	uint64(capstone.ARCH_ARM):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_ARM64):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_MIPS):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_X86):        {{uint64(capstone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(capstone.OPT_SYNTAX_ATT), "ATT"}, {uint64(capstone.OPT_SYNTAX_MASM), "MASM"}},
-// 	uint64(capstone.ARCH_PPC):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_SPARC):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_SYSZ):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_XCORE):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_M68K):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
-// 	uint64(capstone.ARCH_TMS320C64X): {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
-// 	uint64(capstone.ARCH_M680X):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
-// 	uint64(capstone.ARCH_EVM):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_MOS65XX):    {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
-// 	uint64(capstone.ARCH_WASM):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_BPF):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_RISCV):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_SH):         {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// 	uint64(capstone.ARCH_TRICORE):    {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
-// }
+var CapstoneSyntaxList = OptionSlice{}
+var CapstoneSyntaxOptions = map[uint64]OptionSlice{
+	uint64(capstone.ARCH_ARM):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_ARM64):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_MIPS):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_X86):        {{uint64(capstone.OPT_SYNTAX_INTEL), "Intel"}, {uint64(capstone.OPT_SYNTAX_ATT), "ATT"}, {uint64(capstone.OPT_SYNTAX_MASM), "MASM"}},
+	uint64(capstone.ARCH_PPC):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_SPARC):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_SYSZ):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_XCORE):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_M68K):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
+	uint64(capstone.ARCH_TMS320C64X): {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}},
+	uint64(capstone.ARCH_M680X):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_NOREGNAME), "NOREGNAME"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
+	uint64(capstone.ARCH_EVM):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
+	uint64(capstone.ARCH_MOS65XX):    {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}, {uint64(capstone.OPT_SYNTAX_MOTOROLA), "Motorola"}},
+	uint64(capstone.ARCH_WASM):       {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
+	uint64(capstone.ARCH_BPF):        {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
+	uint64(capstone.ARCH_RISCV):      {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
+	uint64(capstone.ARCH_SH):         {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
+	uint64(capstone.ARCH_TRICORE):    {{uint64(capstone.OPT_SYNTAX_DEFAULT), "Default"}},
+}
 
-func Disassemble(arch capstone.Architecture, mode capstone.Mode, code []byte, offset uint64, bigEndian bool /*syntaxValue capstone.OptionValue, */, addAddress bool) (string, uint64, bool, error) {
+func Disassemble(arch capstone.Architecture, mode capstone.Mode, code []byte, offset uint64, bigEndian bool, syntaxValue int, addAddress bool) (string, uint64, bool, error) {
 	defer func() {
 		if r := recover(); r != nil {
 			return
@@ -130,9 +129,9 @@ func Disassemble(arch capstone.Architecture, mode capstone.Mode, code []byte, of
 	}
 	defer engine.Close()
 
-	// if syntaxValue != 0 {
-	// 	engine.Option(capstone.OPT_SYNTAX, capstone.OptionValue(syntaxValue))
-	// }
+	if syntaxValue >= 0 {
+		engine.Option(capstone.OPT_SYNTAX, capstone.OptionValue(syntaxValue))
+	}
 
 	if bigEndian {
 		code, err = capstoneToBigEndian(code, arch, mode)
@@ -157,7 +156,7 @@ func Disassemble(arch capstone.Architecture, mode capstone.Mode, code []byte, of
 
 	return result, uint64(len(insns)), true, nil
 }
-func Assemble(arch keystone.Architecture, mode keystone.Mode, code string, offset uint64, bigEndian bool /*, syntaxValue keystone.OptionValue*/) ([]byte, uint64, bool, error) {
+func Assemble(arch keystone.Architecture, mode keystone.Mode, code string, offset uint64, bigEndian bool, syntaxValue int) ([]byte, uint64, bool, error) {
 	defer func() {
 		if r := recover(); r != nil {
 			return
@@ -181,9 +180,9 @@ func Assemble(arch keystone.Architecture, mode keystone.Mode, code string, offse
 	}
 	defer ks.Close()
 
-	// if syntaxValue != 0 {
-	// 	ks.Option(keystone.OPT_SYNTAX, keystone.OptionValue(syntaxValue))
-	// }
+	if syntaxValue >= 0 {
+		ks.Option(keystone.OPT_SYNTAX, keystone.OptionValue(syntaxValue))
+	}
 
 	encoding, stat_count, ok := ks.Assemble(code, offset)
 	if err := ks.LastError(); err != nil {

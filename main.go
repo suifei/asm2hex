@@ -44,24 +44,25 @@ var prefix_hex bool = false
 var offset uint64 = 0
 var bigEndian bool = false
 var addAddress bool = false
+
 type Param struct {
-	Arch uint64
-	Mode uint64
-	// Syntax uint64
-	Info string
+	Arch   uint64
+	Mode   uint64
+	Syntax int
+	Info   string
 }
 
 var KSSelectParam = &Param{
-	Arch: 0,
-	Mode: 0,
-	// Syntax: 0,
-	Info: "",
+	Arch:   0,
+	Mode:   0,
+	Syntax: -1,
+	Info:   "",
 }
 var CSSelectParam = &Param{
-	Arch: 0,
-	Mode: 0,
-	// Syntax: 0,
-	Info: "",
+	Arch:   0,
+	Mode:   0,
+	Syntax: -1,
+	Info:   "",
 }
 
 var status *widget.Label
@@ -69,11 +70,10 @@ var convertBtn *widget.Button
 var toggleBtn *widget.Button
 var keystoneArchDropdown,
 	keystoneModeDropdown,
-	// keystoneSyntaxDropdown,
+	keystoneSyntaxDropdown,
 	capstoneArchDropdown,
-	capstoneModeDropdown *widget.Select
-
-// capstoneSyntaxDropdown,
+	capstoneModeDropdown,
+	capstoneSyntaxDropdown *widget.Select
 
 var asm2hexTools *fyne.Container
 var hex2asmTools *fyne.Container
@@ -115,20 +115,20 @@ func updateSelectParam() {
 			CSSelectParam.Info += " " + capstoneModeDropdown.Selected
 		}
 	}
-	// if keystoneSyntaxDropdown != nil && archs.KeystoneSyntaxList != nil {
-	// 	index := keystoneSyntaxDropdown.SelectedIndex()
-	// 	if index >= 0 && index < len(archs.KeystoneSyntaxList) {
-	// 		KSSelectParam.Syntax = archs.KeystoneSyntaxList[index].Const
-	// 		KSSelectParam.Info += " " + keystoneSyntaxDropdown.Selected
-	// 	}
-	// }
-	// if capstoneSyntaxDropdown != nil && archs.CapstoneSyntaxList != nil {
-	// 	index := capstoneSyntaxDropdown.SelectedIndex()
-	// 	if index >= 0 && index < len(archs.CapstoneSyntaxList) {
-	// 		CSSelectParam.Syntax = archs.CapstoneSyntaxList[index].Const
-	// 		CSSelectParam.Info += " " + capstoneSyntaxDropdown.Selected
-	// 	}
-	// }
+	if keystoneSyntaxDropdown != nil && archs.KeystoneSyntaxList != nil {
+		index := keystoneSyntaxDropdown.SelectedIndex()
+		if index >= 0 && index < len(archs.KeystoneSyntaxList) {
+			KSSelectParam.Syntax = int(archs.KeystoneSyntaxList[index].Const)
+			KSSelectParam.Info += " " + keystoneSyntaxDropdown.Selected
+		}
+	}
+	if capstoneSyntaxDropdown != nil && archs.CapstoneSyntaxList != nil {
+		index := capstoneSyntaxDropdown.SelectedIndex()
+		if index >= 0 && index < len(archs.CapstoneSyntaxList) {
+			CSSelectParam.Syntax = int(archs.CapstoneSyntaxList[index].Const)
+			CSSelectParam.Info += " " + capstoneSyntaxDropdown.Selected
+		}
+	}
 
 	// fmt.Println("Keystone", toJson(KSSelectParam))
 	// fmt.Println("Capstone", toJson(CSSelectParam))
@@ -159,11 +159,11 @@ func createDropdowns() *fyne.Container {
 			keystoneModeDropdown.SetOptions(getOptionNames(options))
 			keystoneModeDropdown.SetSelectedIndex(0)
 		}
-		// if options, ok := KeystoneSyntaxOptions[mapKey]; ok && keystoneSyntaxDropdown != nil {
-		// 	KeystoneSyntaxList = options
-		// 	keystoneSyntaxDropdown.SetOptions(getOptionNames(options))
-		// 	keystoneSyntaxDropdown.SetSelectedIndex(0)
-		// }
+		if options, ok := archs.KeystoneSyntaxOptions[mapKey]; ok && keystoneSyntaxDropdown != nil {
+			archs.KeystoneSyntaxList = options
+			keystoneSyntaxDropdown.SetOptions(getOptionNames(options))
+			keystoneSyntaxDropdown.SetSelectedIndex(0)
+		}
 		updateSelectParam()
 	}
 
@@ -174,12 +174,12 @@ func createDropdowns() *fyne.Container {
 		updateSelectParam()
 	}
 
-	// keystoneSyntaxDropdown = &widget.Select{}
-	// keystoneSyntaxDropdown.ExtendBaseWidget(keystoneSyntaxDropdown)
-	// keystoneSyntaxDropdown.OnChanged = func(s string) {
-	// 	fmt.Println("Keystone Syntax:", s)
-	// 	updateSelectParam()
-	// }
+	keystoneSyntaxDropdown = &widget.Select{}
+	keystoneSyntaxDropdown.ExtendBaseWidget(keystoneSyntaxDropdown)
+	keystoneSyntaxDropdown.OnChanged = func(s string) {
+		fmt.Println("Keystone Syntax:", s)
+		updateSelectParam()
+	}
 
 	capstoneArchDropdown = &widget.Select{}
 	capstoneArchDropdown.ExtendBaseWidget(capstoneArchDropdown)
@@ -193,11 +193,11 @@ func createDropdowns() *fyne.Container {
 			capstoneModeDropdown.SetOptions(getOptionNames(options))
 			capstoneModeDropdown.SetSelectedIndex(0)
 		}
-		// if options, ok := CapstoneSyntaxOptions[mapKey]; ok && capstoneSyntaxDropdown != nil {
-		// 	CapstoneSyntaxList = options
-		// 	capstoneSyntaxDropdown.SetOptions(getOptionNames(options))
-		// 	capstoneSyntaxDropdown.SetSelectedIndex(0)
-		// }
+		if options, ok := archs.CapstoneSyntaxOptions[mapKey]; ok && capstoneSyntaxDropdown != nil {
+			archs.CapstoneSyntaxList = options
+			capstoneSyntaxDropdown.SetOptions(getOptionNames(options))
+			capstoneSyntaxDropdown.SetSelectedIndex(0)
+		}
 		updateSelectParam()
 	}
 	capstoneModeDropdown = &widget.Select{}
@@ -207,25 +207,25 @@ func createDropdowns() *fyne.Container {
 		updateSelectParam()
 	}
 
-	// capstoneSyntaxDropdown = &widget.Select{}
-	// capstoneSyntaxDropdown.ExtendBaseWidget(capstoneSyntaxDropdown)
-	// capstoneSyntaxDropdown.OnChanged = func(s string) {
-	// 	fmt.Println("Capstone Syntax:", s)
-	// 	updateSelectParam()
-	// }
+	capstoneSyntaxDropdown = &widget.Select{}
+	capstoneSyntaxDropdown.ExtendBaseWidget(capstoneSyntaxDropdown)
+	capstoneSyntaxDropdown.OnChanged = func(s string) {
+		fmt.Println("Capstone Syntax:", s)
+		updateSelectParam()
+	}
 
 	keystoneArchDropdown.SetSelectedIndex(1)
 	capstoneArchDropdown.SetSelectedIndex(1)
 	asm2hexTools = container.NewHBox(
 		keystoneArchDropdown,
 		keystoneModeDropdown,
-		// keystoneSyntaxDropdown,
+		keystoneSyntaxDropdown,
 	)
 	hex2asmTools =
 		container.NewHBox(
 			capstoneArchDropdown,
 			capstoneModeDropdown,
-			// capstoneSyntaxDropdown,
+			capstoneSyntaxDropdown,
 		)
 	asm2hexTools.Show()
 	hex2asmTools.Hidden = true
@@ -396,15 +396,15 @@ cbnz r0, #0x682c4
 		uri, _ := url.Parse("https://github.com/suifei")
 		fyne.CurrentApp().OpenURL(uri)
 	})
-	openFyne := widget.NewButtonWithIcon(fmt.Sprintf("Fyne %s","v2.4.5"), theme.FyneLogo(), func() {
+	openFyne := widget.NewButtonWithIcon(fmt.Sprintf("Fyne %s", "v2.4.5"), theme.FyneLogo(), func() {
 		uri, _ := url.Parse("https://fyne.io/")
 		fyne.CurrentApp().OpenURL(uri)
-	}) 
-	openCapstone := widget.NewButtonWithIcon(fmt.Sprintf("Capstone v%d.%d",capstone.API_MAJOR, capstone.API_MINOR), icons.CAPSTONE_PNG_RES, func() {
+	})
+	openCapstone := widget.NewButtonWithIcon(fmt.Sprintf("Capstone v%d.%d", capstone.API_MAJOR, capstone.API_MINOR), icons.CAPSTONE_PNG_RES, func() {
 		uri, _ := url.Parse("https://www.capstone-engine.org/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
-	openKeystone := widget.NewButtonWithIcon(fmt.Sprintf("Keystone v%d.%d",keystone.API_MAJOR, keystone.API_MINOR), icons.KEYSTONE_PNG_RES, func() {
+	openKeystone := widget.NewButtonWithIcon(fmt.Sprintf("Keystone v%d.%d", keystone.API_MAJOR, keystone.API_MINOR), icons.KEYSTONE_PNG_RES, func() {
 		uri, _ := url.Parse("https://www.keystone-engine.org/")
 		fyne.CurrentApp().OpenURL(uri)
 	})
@@ -591,8 +591,7 @@ func doConversion(status *widget.Label,
 					v,
 					offset,
 					bigEndian,
-				)
-				// keystone.OptionValue(KSSelectParam.Syntax))
+					int(KSSelectParam.Syntax))
 			if !ok {
 				var errMsg = "Unknown error"
 				if err != nil {
@@ -625,7 +624,7 @@ func doConversion(status *widget.Label,
 			encoding,
 			offset,
 			bigEndian,
-			// capstone.OptionValue(CSSelectParam.Syntax),
+			int(CSSelectParam.Syntax),
 			addAddress,
 		)
 		if !ok {
