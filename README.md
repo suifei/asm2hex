@@ -1,12 +1,13 @@
 
 # ASM2HEX
 
+
+[![ASM to HEX Converter Build](https://github.com/suifei/asm2hex/actions/workflows/main.yml/badge.svg)](https://github.com/suifei/asm2hex/actions/workflows/main.yml)
 [![Github stars](https://img.shields.io/github/stars/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
 [![Github forks](https://img.shields.io/github/forks/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
 [![GitHub followers](https://img.shields.io/github/followers/suifei.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/suifei?tab=followers)
 [![Twitter Follow](https://img.shields.io/twitter/follow/csuifei?style=social)](https://twitter.com/csuifei)
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/suifei/asm2hex/.github/workflows/main.yml)](https://github.com/suifei/asm2hex/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/suifei/asm2hex)](https://goreportcard.com/report/github.com/suifei/asm2hex)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![GoDoc](https://godoc.org/github.com/suifei/asm2hex?status.svg)](https://pkg.go.dev/github.com/suifei/asm2hex)
