@@ -1,6 +1,7 @@
 
 # ASM2HEX
 
+[![GitHub Streak](https://streak-stats.demolab.com?user=suifei&theme=swift&locale=zh_Hans&date_format=%5BY.%5Dn.j)](https://git.io/streak-stats)
 
 [![ASM to HEX Converter Build](https://github.com/suifei/asm2hex/actions/workflows/main.yml/badge.svg)](https://github.com/suifei/asm2hex/actions/workflows/main.yml)
 [![Github stars](https://img.shields.io/github/stars/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
