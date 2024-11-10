@@ -1,4 +1,8 @@
-
+> The new version is refactored using C++ (cpp), while the original version was developed using Golang. A cross-platform GUI tool for converting between Assembly and Machine Code (Hex), powered by Keystone Engine and Capstone Engine.
+[v2-asm2hex2](https://github.com/suifei/asm2hex)
+> 新版本使用C ++（cpp）重构，而原始版本是使用Golang开发的。一个跨平台的GUI工具，用于在Assembly和机器代码（Hex）之间进行转换，由Keystone Engine和Capstone Engine提供支持。
+> 新版本将提供更加详细的汇编信息，请勾选“Verbose“进行查看，每次记住点一下”Assembie"或"Disassembie"按钮。
+> 采用C++ 使用wxWidgets 3.2.2版本进行重构，一样跨平台运行，并兼容 Windows 7。
 # ASM2HEX
 
 [![GitHub Streak](https://streak-stats.demolab.com?user=suifei&theme=swift&locale=zh_Hans&date_format=%5BY.%5Dn.j)](https://git.io/streak-stats)
