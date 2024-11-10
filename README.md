@@ -6,6 +6,23 @@
 
 # v2-asm2hex2
 
+[![GitHub Streak](https://streak-stats.demolab.com?user=suifei&theme=swift&locale=zh_Hans&date_format=%5BY.%5Dn.j)](https://git.io/streak-stats)
+
+[![ASM to HEX Converter Build](https://github.com/suifei/asm2hex/actions/workflows/main.yml/badge.svg)](https://github.com/suifei/asm2hex/actions/workflows/main.yml)
+[![Github stars](https://img.shields.io/github/stars/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![Github forks](https://img.shields.io/github/forks/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![GitHub followers](https://img.shields.io/github/followers/suifei.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/suifei?tab=followers)
+[![Twitter Follow](https://img.shields.io/twitter/follow/csuifei?style=social)](https://twitter.com/csuifei)
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/suifei/asm2hex)](https://goreportcard.com/report/github.com/suifei/asm2hex)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![GoDoc](https://godoc.org/github.com/suifei/asm2hex?status.svg)](https://pkg.go.dev/github.com/suifei/asm2hex)
+[![Release](https://img.shields.io/github/release/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex/releases)
+[![Download](https://img.shields.io/github/downloads/suifei/asm2hex/total)](https://github.com/suifei/asm2hex/releases)
+[![Github issues](https://img.shields.io/github/issues/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![Github last commit](https://img.shields.io/github/last-commit/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+[![Github contributors](https://img.shields.io/github/contributors/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
+
 A powerful cross-platform GUI tool for Assembly-Machine Code conversion, reborn with C++.
 
 ## What's New in V2
@@ -55,23 +72,6 @@ v2-asm2hex2 已完全使用C++重写，相比前代Golang版本带来了显著�
 > 💡 Quick Tip: Enable "Verbose" mode for detailed assembly analysis. Remember to click "Assemble" or "Disassemble" button after making changes.
 
 # ASM2HEX
-
-[![GitHub Streak](https://streak-stats.demolab.com?user=suifei&theme=swift&locale=zh_Hans&date_format=%5BY.%5Dn.j)](https://git.io/streak-stats)
-
-[![ASM to HEX Converter Build](https://github.com/suifei/asm2hex/actions/workflows/main.yml/badge.svg)](https://github.com/suifei/asm2hex/actions/workflows/main.yml)
-[![Github stars](https://img.shields.io/github/stars/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
-[![Github forks](https://img.shields.io/github/forks/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
-[![GitHub followers](https://img.shields.io/github/followers/suifei.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/suifei?tab=followers)
-[![Twitter Follow](https://img.shields.io/twitter/follow/csuifei?style=social)](https://twitter.com/csuifei)
-
-[![Go Report Card](https://goreportcard.com/badge/github.com/suifei/asm2hex)](https://goreportcard.com/report/github.com/suifei/asm2hex)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![GoDoc](https://godoc.org/github.com/suifei/asm2hex?status.svg)](https://pkg.go.dev/github.com/suifei/asm2hex)
-[![Release](https://img.shields.io/github/release/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex/releases)
-[![Download](https://img.shields.io/github/downloads/suifei/asm2hex/total)](https://github.com/suifei/asm2hex/releases)
-[![Github issues](https://img.shields.io/github/issues/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
-[![Github last commit](https://img.shields.io/github/last-commit/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
-[![Github contributors](https://img.shields.io/github/contributors/suifei/asm2hex.svg?style=flat-square)](https://github.com/suifei/asm2hex)
 
 ASM2HEX是一款用Go语言编写的,基于Fyne框架开发的汇编语言与十六进制机器码相互转换的图形化工具。它支持ARM64、ARM和Thumb三种指令集。
 
